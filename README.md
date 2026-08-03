@@ -66,6 +66,27 @@ $ python ch02/10_gpt.py
 
 uv를 사용하는 경우에는 `python`을 `uv run python`으로 바꾸어 실행하세요.
 
+## 주피터 노트북으로 실습하기
+
+`ch01`~`ch09`의 각 `.py` 파일은 같은 이름의 `.ipynb` 노트북으로도 준비돼 있습니다.
+한 셀씩 직접 쳐보며 따라 하고 싶다면 노트북 쪽을 사용하세요.
+
+```bash
+uv run jupyter lab   # 또는 .venv/bin/jupyter lab
+```
+
+노트북은 `tools/py2ipynb.py`가 `.py`에서 자동 생성한 것이라 코드는 원본과 같습니다.
+`__file__`을 쓰는 맨 앞의 경로 설정 부분만 노트북용으로 바뀌어 있어서, 어느 장 폴더에서
+열든 저장소 루트를 기준으로 동작합니다.
+
+원본 `.py`가 갱신되면 아래 명령으로 노트북을 다시 만들 수 있습니다.
+
+```bash
+uv run python tools/py2ipynb.py --force   # 전체 다시 생성
+uv run python tools/py2ipynb.py ch01      # 특정 장만 (기존 노트북은 건너뜀)
+uv run python tools/verify_ipynb.py       # 노트북 코드가 .py와 같은지 검증
+```
+
 ## 라이선스
 
 이 리포지터리의 소스 코드는 [MIT 라이선스](http://www.opensource.org/licenses/MIT)로 제공됩니다. 상업적·비상업적 용도와 관계없이 자유롭게 이용할 수 있습니다.
