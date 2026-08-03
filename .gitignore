@@ -8,3 +8,9 @@ __pycache__/
 .venv/
 .jupyter_token
 logs/
+
+# 이 서버 환경 전용 (경로·GPU 번호가 하드코딩돼 있어 공유하지 않는다)
+.vscode/
+start_jupyter.sh
+00_smoke_test.ipynb
+tools/bench09.py
