@@ -31,6 +31,7 @@ SCHEDULE = [
     ("2026-12-13", 4, "토크나이저(응용편)", "StoryBot Tokenizer 개선", "ch04"),
     ("2026-12-20", 5, "모델(응용편)", "StoryBot 모델 개선", "ch05"),
     ("2026-12-27", 6, "학습(응용편)", "StoryBot 학습 개선", "ch06"),
+    ("2027-01-03", "7~9", "도전편", "WebBot 구축 및 최적화", "webbot"),
 ]
 
 # 스터디 시작 시각 (매주 일요일)
@@ -70,7 +71,7 @@ def build_embed(today: dt.date, entry: dict) -> dict:
     nxt = next_session(today)
     if nxt is None:
         title = f"{emoji} {date_label} · 스터디 완주 🎉"
-        footer = "6주간 정말 고생 많으셨습니다!"
+        footer = "7주간 정말 고생 많으셨습니다!"
     else:
         d, num, chapter_title, project, path = nxt
         dday = (d - today).days
