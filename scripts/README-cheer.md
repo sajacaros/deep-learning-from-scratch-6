@@ -1,7 +1,7 @@
 # 스터디 데일리 응원봇 세팅
 
 매일 아침 **07:00 KST**에 Discord로 그날의 응원 문구를 보냅니다.
-대상 기간: 2026-11-18 ~ 2027-01-03 (47일)
+대상 기간: 2026-11-17 ~ 2027-01-03 (48일)
 스터디 모임: 매주 일요일 11:30 (11/22 ~ 01/03, 7주)
 
 ## 구성
@@ -9,7 +9,7 @@
 ```
 .github/workflows/daily-cheer.yml   # 스케줄러 (cron)
 scripts/daily_cheer.py             # 전송 스크립트 (표준 라이브러리만 사용)
-scripts/messages.json              # 날짜별 문구 47개
+scripts/messages.json              # 날짜별 문구 48개
 ```
 
 ## 1. Discord 웹훅 만들기
