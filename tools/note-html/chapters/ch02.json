@@ -1,0 +1,22 @@
+{
+  "title": "2장 모델 기본편",
+  "description": "2장 모델(기본편) 학습 노트: 소프트 딕셔너리에서 GPT-2까지",
+  "headline": "2장. 모델 (기본편)",
+  "meta": "소프트 딕셔너리 → 트랜스포머 블록 → GPT-2 · 13개 절",
+  "searchHint": "예: 인과 마스크, LayerNorm",
+  "sections": [
+    { "match": "2.1", "group": "어텐션", "rail": "기본 원리" },
+    { "match": "2.2", "group": "어텐션", "rail": "수식" },
+    { "match": "2.3", "group": "어텐션", "rail": "스케일링" },
+    { "match": "2.4", "group": "트랜스포머", "rail": "구조" },
+    { "match": "2.5", "group": "트랜스포머", "rail": "위치" },
+    { "match": "2.6", "group": "트랜스포머", "rail": "마스크" },
+    { "match": "2.7", "group": "블록 완성", "rail": "밸류 개선" },
+    { "match": "2.8", "group": "블록 완성", "rail": "멀티헤드" },
+    { "match": "2.9", "group": "블록 완성", "rail": "블록" },
+    { "match": "2.10", "group": "GPT-2와 정리", "rail": "GPT-2" },
+    { "match": "핵심 정리", "group": "GPT-2와 정리", "rail": "정리" },
+    { "match": "이후 장과의 연결", "group": "GPT-2와 정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "GPT-2와 정리", "rail": "복습" }
+  ]
+}

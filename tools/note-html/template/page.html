@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko"><head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="light" name="color-scheme">
+<meta content="#fcfbfa" name="theme-color">
+<meta content="{{DESCRIPTION}}" name="description">
+<title>{{TITLE}}</title>
+<style>
+{{DECK_CSS}}
+/* 단일 페이지 모드 — 챕터 라우팅 없이 한 번에 스크롤한다 */
+.app-layout{grid-template-columns:260px minmax(0,1fr) 238px}
+.sidebar .chapter-link{grid-template-columns:26px minmax(0,1fr)}
+.article{animation:none}
+</style>
+</head>
+<body>
+<div aria-hidden="true" class="scroll-progress" id="scroll-progress"></div>
+
+<header class="app-header">
+  <button aria-label="목차 열기" class="mobile-menu-button" id="mobile-menu" type="button">목차</button>
+  <a class="brand" href="#top">
+    <span aria-hidden="true" class="brand-mark"></span>
+    <span class="brand-copy">
+      <span class="brand-title">{{BRAND}}</span>
+      <span class="brand-subtitle">{{BRAND_SUB}}</span>
+    </span>
+  </a>
+  <nav aria-label="구획 레일" class="memory-rail"><span class="rail-group" id="rail-group"></span><div class="rail-track" id="rail-track"></div></nav>
+  <div class="header-actions">
+    <button aria-label="전체 내용 검색" class="search-button" id="search-open" type="button">
+      <span>찾기</span><span class="search-key">/</span>
+    </button>
+  </div>
+</header>
+
+<div class="app-layout">
+  <aside aria-label="차례" class="sidebar" id="sidebar">
+    <p class="sidebar-label">{{SIDEBAR_LABEL}}</p>
+    <nav class="chapter-list" id="chapter-list"></nav>
+  </aside>
+  <main class="reader"><article class="article" id="top">
+    <header class="page-hero">
+      <div class="page-kicker">{{KICKER}}</div>
+      <h1 class="page-title">{{HEADLINE}}</h1>
+      <div class="page-meta">{{META}}</div>
+    </header>
+    <div class="content">
+{{CONTENT}}
+    </div>
+  </article></main>
+  <aside aria-label="현재 위치" class="page-toc">
+    <p class="toc-label">현재 위치</p><nav class="toc-list" id="page-toc-list"></nav>
+  </aside>
+</div>
+
+<button aria-label="목차 닫기" class="sidebar-scrim" id="sidebar-scrim" type="button"></button>
+<div aria-hidden="true" aria-modal="true" class="overlay" id="search-overlay" role="dialog">
+  <div class="search-panel">
+    <div class="search-field-wrap">
+      <input autocomplete="off" class="search-field" id="search-input" placeholder="{{SEARCH_HINT}}" type="search">
+      <button class="search-close" id="search-close" type="button">닫기</button>
+    </div>
+    <div class="search-results" id="search-results"></div>
+  </div>
+</div>
+<div id="tip"></div>
+
+<script>
+/* 문서형 덱 셸 — .content 안의 h2 를 장으로 잘라 한 번에 한 장만 그린다(해시 라우팅).
+   문서 전체 길이의 스크롤바를 만들지 않는 것이 요점이다 — 스크롤은 현재 장 안에서만
+   일어난다. 사이드바·레일·목차·검색은 h2 에서 자동으로 나온다. 인쇄는 전 장을 낸다.
+   h2 가 하나도 없으면 셸을 걸지 않는다(짧은 문서는 .content 만 쓴다). */
+(() => {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[c]));
+  const content = $(".content"), tocList = $("#page-toc-list"),
+        chapterList = $("#chapter-list"), railTrack = $("#rail-track"),
+        sidebar = $("#sidebar"), scrim = $("#sidebar-scrim"), tip = $("#tip"),
+        article = $(".article"), hero = $(".page-hero");
+  const slug = t => t.trim().replace(/\s+/g, "-").replace(/[^\w가-힣-]/g, "").toLowerCase();
+
+  const h2s = [...content.querySelectorAll("h2")];
+  if (!h2s.length) return;
+  h2s.forEach(h => { if (!h.id) h.id = slug(h.textContent); });
+  const SECS = h2s.map((h, i) => ({
+    id: h.id, idx: h.dataset.idx || String(i + 1).padStart(2, "0"),
+    title: h.dataset.title || h.textContent.trim(),
+    heading: h.textContent.trim(),   // 장 표지는 h2 전문(주장), 차례·레일은 title(이름)
+    rail: h.dataset.rail || (h.dataset.title || h.textContent).trim().slice(0, 8),
+    mode: h.dataset.mode || "",
+    group: h.dataset.group || ""
+  }));
+  /* ── 사이드바 · 헤더 레일 ── */
+  const link = s =>
+    `<a class="chapter-link" data-link="${s.id}" href="#${s.id}">
+       <span class="chapter-index">${s.idx}</span>
+       <span><span class="chapter-title">${esc(s.title)}</span>
+       ${s.mode ? `<span class="chapter-mode">${esc(s.mode)}</span>` : ""}</span></a>`;
+  /* 같은 data-group 이 이어지는 절을 장 하나로 묶어 접을 수 있게 한다 */
+  const groups = [];
+  SECS.forEach((s, i) => {
+    if (!i || s.group !== SECS[i - 1].group) groups.push({ name: s.group, secs: [] });
+    groups.at(-1).secs.push(s);
+  });
+  chapterList.innerHTML = groups.map(g => g.name
+    ? `<details class="chapter-fold"><summary class="chapter-group">${esc(g.name)}</summary>
+         <div class="chapter-items">${g.secs.map(link).join("")}</div></details>`
+    : g.secs.map(link).join("")).join("");
+  /* 레일은 render() 에서 지금 장의 절만으로 다시 그린다. 점의 번호는 장 안의 순서 */
+  let railGroup = null;
+  const drawRail = g => {
+    if (g === railGroup) return;
+    railGroup = g;
+    $("#rail-group").textContent = g.name;
+    railTrack.classList.toggle("dense", g.secs.length > 12);
+    railTrack.innerHTML = g.secs.map((s, k) =>
+      `<a class="rail-link" data-link="${s.id}" href="#${s.id}" title="${esc(s.title)}">
+         <span class="rail-dot">${k + 1}</span><span class="rail-label">${esc(s.rail)}</span></a>`).join("");
+  };
+
+  /* ── 구획을 장으로 자른다 ── */
+  const PAGES = [];
+  {
+    h2s.forEach((h, i) => {
+      const sec = document.createElement("section");
+      sec.className = "chapter-page" + (i > 0 ? " hide-head" : "");
+      sec.dataset.sec = h.id;
+      h.parentNode.insertBefore(sec, h);
+      let n = sec.nextSibling;
+      while (n && n !== h2s[i + 1]) { const nx = n.nextSibling; sec.appendChild(n); n = nx; }
+      PAGES.push(sec);
+    });
+    const lead = [];
+    for (const n of [...content.childNodes]) { if (n === PAGES[0]) break; lead.push(n); }
+    lead.reverse().forEach(n => PAGES[0].insertBefore(n, PAGES[0].firstChild));
+  }
+
+  /* ── 목차 하이라이트 ── */
+  let obs;
+  const observe = heads => {
+    obs?.disconnect();
+    if (!heads.length) return;
+    obs = new IntersectionObserver(es => es.forEach(en => {
+      if (!en.isIntersecting) return;
+      tocList.querySelectorAll(".toc-link").forEach(a => a.classList.toggle("active", a.dataset.toc === en.target.id));
+    }), { rootMargin: "-90px 0px -70% 0px" });
+    heads.forEach(h => obs.observe(h));
+  };
+
+  /* ── 한 장 그리기 ── */
+  const heroInner = hero ? hero.innerHTML : "";
+  const kicker = hero?.querySelector(".page-kicker")?.textContent.trim() || "";
+  let cur = -1;
+  const nav = document.createElement("nav");
+  nav.className = "page-navigation";
+  nav.setAttribute("aria-label", "장 이동");
+  article.appendChild(nav);
+
+  function render(i, focus) {
+    cur = i = Math.max(0, Math.min(SECS.length - 1, i));
+    const s = SECS[i], prev = SECS[i - 1], next = SECS[i + 1];
+    PAGES.forEach((p, k) => p.classList.toggle("is-on", k === i));
+    drawRail(groups.find(g => g.secs.includes(s)));
+
+    if (hero) {
+      if (i === 0) { hero.innerHTML = heroInner; hero.classList.remove("is-chapter"); }
+      else {
+        hero.classList.add("is-chapter");
+        hero.innerHTML = `${kicker ? `<div class="page-kicker">${esc(kicker)}</div>` : ""}
+          <h1 class="page-title">${esc(s.heading)}</h1>
+          <div class="page-meta">${s.mode ? `<span class="mode-badge">${esc(s.mode)}</span>` : ""}
+            <span>${i + 1} / ${SECS.length}</span></div>`;
+      }
+    }
+    document.querySelectorAll("[data-link]").forEach(a => {
+      const on = a.dataset.link === s.id;
+      a.classList.toggle("active", on);
+      if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+    chapterList.querySelectorAll(".chapter-fold").forEach(d => {
+      const has = !!d.querySelector(".chapter-link.active");
+      d.classList.toggle("has-active", has);
+      if (has) d.open = true;
+    });
+
+    const heads = [...PAGES[i].querySelectorAll("h2, h3")].filter(h => !(i > 0 && h.tagName === "H2"));
+    heads.forEach(h => { if (!h.id) h.id = slug(h.textContent); });
+    tocList.innerHTML = heads.map(h =>
+      `<a class="toc-link level-${h.tagName === "H2" ? 2 : 3}" href="#${h.id}" data-toc="${h.id}">${esc(h.dataset.title || h.textContent.trim())}</a>`).join("");
+
+    nav.innerHTML =
+      (prev ? `<a class="page-nav-link prev" href="#${prev.id}"><span class="nav-direction">← 이전</span><span class="nav-title">${esc(prev.title)}</span></a>`
+            : `<span class="page-nav-spacer"></span>`) +
+      (next ? `<a class="page-nav-link next" href="#${next.id}"><span class="nav-direction">다음 →</span><span class="nav-title">${esc(next.title)}</span></a>`
+            : `<span class="page-nav-spacer"></span>`);
+
+    closeSide();
+    if (focus) document.getElementById(focus)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    else scrollTo({ top: 0 });
+    observe(heads);
+  }
+
+  /* ── 라우팅 ── */
+  function resolve() {
+    const id = decodeURIComponent(location.hash.replace(/^#/, ""));
+    if (!id) return { i: 0 };
+    const si = SECS.findIndex(s => s.id === id);
+    if (si >= 0) return { i: si };
+    const sec = document.getElementById(id)?.closest(".chapter-page");
+    return sec ? { i: PAGES.indexOf(sec), focus: id } : { i: Math.max(0, cur) };
+  }
+  function go() {
+    const r = resolve();
+    if (r.i === cur) { if (r.focus) document.getElementById(r.focus)?.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+    render(r.i, r.focus);
+  }
+  addEventListener("hashchange", go);
+  go();
+
+  /* ── 스크롤 진행 ── */
+  const bar = $("#scroll-progress");
+  const onScroll = () => { const h = document.documentElement.scrollHeight - innerHeight;
+    bar.style.width = (h > 0 ? (scrollY / h) * 100 : 0) + "%"; };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  /* ── 모바일 목차 ── */
+  const openSide = () => { sidebar.classList.add("open"); scrim.classList.add("open"); document.body.classList.add("no-scroll"); };
+  function closeSide() { sidebar.classList.remove("open"); scrim.classList.remove("open"); document.body.classList.remove("no-scroll"); }
+  $("#mobile-menu").addEventListener("click", () => sidebar.classList.contains("open") ? closeSide() : openSide());
+  scrim.addEventListener("click", closeSide);
+  chapterList.addEventListener("click", closeSide);
+
+  document.addEventListener("mousemove", e => {
+    const el = e.target.closest?.("[data-tip]");
+    if (!el) { tip.style.display = "none"; return; }
+    tip.innerHTML = el.dataset.tip; tip.style.display = "block";
+    const r = tip.getBoundingClientRect();
+    let x = e.clientX + 14, y = e.clientY - r.height - 12;
+    if (x + r.width > innerWidth - 8) x = innerWidth - r.width - 8;
+    if (y < 8) y = e.clientY + 18;
+    tip.style.left = x + "px"; tip.style.top = y + "px";
+  });
+
+  /* ── 검색 — 구획 단위 색인 ── */
+  const overlay = $("#search-overlay"), input = $("#search-input"), results = $("#search-results");
+  const INDEX = [];
+  SECS.forEach((s, i) => {
+    let text = PAGES[i].textContent;
+    text = text.replace(/\s+/g, " ").trim();
+    for (let k = 0; k < text.length; k += 320)
+      INDEX.push({ id: s.id, title: `${s.idx}. ${s.title}`, text: text.slice(k, k + 380) });
+  });
+  function search(q) {
+    q = q.trim().toLowerCase();
+    if (!q) { results.innerHTML = `<div class="search-empty">검색어를 입력하세요.</div>`; return; }
+    const hits = INDEX.filter(r => r.text.toLowerCase().includes(q) || r.title.toLowerCase().includes(q)).slice(0, 24);
+    if (!hits.length) { results.innerHTML = `<div class="search-empty">결과가 없습니다.</div>`; return; }
+    const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
+    results.innerHTML = hits.map(h => {
+      const k = h.text.toLowerCase().indexOf(q), s0 = Math.max(0, k - 60);
+      const snip = (s0 > 0 ? "…" : "") + h.text.slice(s0, s0 + 190) + "…";
+      return `<a class="search-result" href="#${h.id}"><span class="search-result-title">${esc(h.title)}</span>
+        <span class="search-result-snippet">${esc(snip).replace(rx, m => `<mark>${m}</mark>`)}</span></a>`;
+    }).join("");
+    results.querySelectorAll("a").forEach(a => a.addEventListener("click", e => {
+      e.preventDefault(); closeS(); location.hash = a.getAttribute("href"); go();
+    }));
+  }
+  const openS = () => { overlay.classList.add("open"); overlay.setAttribute("aria-hidden","false");
+    document.body.classList.add("no-scroll"); input.value = ""; input.focus(); search(""); };
+  const closeS = () => { overlay.classList.remove("open"); overlay.setAttribute("aria-hidden","true");
+    document.body.classList.remove("no-scroll"); };
+  $("#search-open").addEventListener("click", openS);
+  $("#search-close").addEventListener("click", closeS);
+  overlay.addEventListener("click", e => { if (e.target === overlay) closeS(); });
+  input.addEventListener("input", () => search(input.value));
+
+  /* ── 키보드: / 검색 · [ ] 장 이동 · Esc ── */
+  addEventListener("keydown", e => {
+    if (e.key === "Escape") { closeS(); closeSide(); return; }
+    if (/^(INPUT|TEXTAREA)$/.test(e.target.tagName)) return;
+    if (e.key === "/") { e.preventDefault(); openS(); return; }
+    const back = e.key === "[" || e.key === "ArrowLeft", fwd = e.key === "]" || e.key === "ArrowRight";
+    if (!back && !fwd) return;
+    const j = cur + (fwd ? 1 : -1);
+    if (j >= 0 && j < SECS.length) location.hash = "#" + SECS[j].id;
+  });
+})();
+</script>
+</body></html>

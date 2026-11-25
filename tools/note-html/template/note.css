@@ -1,0 +1,27 @@
+/* build.cjs가 덱 CSS(deck.css) 위에 덧붙이는 노트용 스타일 */
+.math-display{display:block;overflow-x:auto;overflow-y:hidden;margin:1.1em 0;text-align:center}
+.math-display mjx-container{margin:0!important}
+.math-inline mjx-container{display:inline-block}
+.content figure img{max-width:100%;height:auto;display:block;margin:0 auto}
+.content pre{overflow-x:auto;max-width:100%}
+.content pre.code-block code{font-family:"SFMono-Regular",Consolas,"Liberation Mono","DejaVu Sans Mono","Ubuntu Mono",monospace;font-size:13px}
+.chapter-code{margin:-6px 0 22px;font-size:14px;color:var(--ink-soft)}
+.mermaid-figure{margin:1.6em 0;overflow-x:auto;text-align:center}
+.mermaid-figure svg{max-width:none;height:auto}
+/* 접이식 정답: <details><summary>정답 보기</summary> … </details> */
+.content details{margin:10px 0 22px}
+.content details>summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;
+  border:1px solid var(--line-strong);border-radius:999px;padding:4px 14px;font-size:13.5px;color:var(--red);
+  background:var(--paper);user-select:none;transition:background .16s,transform .16s}
+.content details>summary::-webkit-details-marker{display:none}
+.content details>summary::before{content:"▸";font-size:11px}
+.content details>summary:hover{transform:translateY(-1px);background:var(--stone)}
+.content details[open]>summary{font-size:0;gap:0;margin-bottom:6px}
+.content details[open]>summary::before{content:"▾ 정답 숨기기";font-size:13.5px}
+.content details[open]{border-left:3px solid var(--red);background:var(--stone);border-radius:0 12px 12px 0;padding:12px 18px 6px}
+.content details>p{margin:.5em 0 .8em}
+/* 일직선 mermaid 사슬 → 줄바꿈되는 상자 */
+.flow-chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px 6px;margin:1.4em 0}
+.flow-node{border:1px solid var(--line-strong);border-radius:10px;padding:7px 11px;font-size:14px;line-height:1.4;background:var(--paper)}
+.flow-arrow{display:inline-flex;flex-direction:column;align-items:center;color:var(--ink-soft);font-size:15px;line-height:1.1}
+.flow-label{font-size:11px;color:var(--red);text-align:center}
