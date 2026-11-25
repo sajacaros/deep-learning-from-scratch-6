@@ -130,7 +130,8 @@ y = F.scaled_dot_product_attention(q, k, v, is_causal=True)
 
 **GQA** [Ainslie et al., 2023]: 여러 쿼리 헤드가 **하나의 KV 헤드를 공유**한다.
 
-![그림 8-1 멀티헤드 어텐션과 GQA 비교](images/fig08-01.png)
+<img src="images/fig08-01.png" alt="그림 8-1 멀티헤드 어텐션과 GQA 비교" width="600">
+
 *그림 8-1 — 멀티헤드 어텐션은 쿼리 헤드와 KV 헤드가 1:1, GQA는 쿼리 헤드 2개가 KV 헤드 1개를 공유한다(각 사각형이 헤드 하나). K·V 메모리가 절반이 된다.*
 
 | | 쿼리 헤드 | KV 헤드 | K·V 메모리 |
@@ -210,7 +211,8 @@ class MultiHeadAttention(nn.Module):
 
 일반 트랜스포머는 모든 토큰이 **같은 FFN 하나**를 지난다. **MoE** [Shazeer et al., 2017]는 FFN(=**전문가**, Expert)을 여러 개 두고, 토큰마다 **상위 k개(top-k)** 만 골라 계산한다.
 
-![그림 8-2 MoE 구조](images/fig08-02.png)
+<img src="images/fig08-02.png" alt="그림 8-2 MoE 구조" width="600">
+
 *그림 8-2 — 전문가 4개 중 1개(top-1)를 쓰는 MoE. **라우터**(작은 신경망)가 확률을 내고, "We"는 FFN 2(p=0.65), "Like"는 FFN 1(p=0.8)로 보낸다. 출력에는 그 확률을 곱한다. (그림 출처: [Zhou et al., 2022])*
 
 - **장점**: 파라미터 수(전문가 수)는 크게 늘리면서 토큰당 **계산량은 k개 전문가 분량**으로 억제한다.

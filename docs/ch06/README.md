@@ -249,7 +249,8 @@ $$
 | **코사인 어닐링** (GPT-3 등) | $\eta = \eta_{\min} + \tfrac12(\eta_{\max}-\eta_{\min})\bigl(1+\cos(\pi p)\bigr)$ | 널리 검증됨. $\eta_{\min}$(보통 $0.1\,\eta_{\max}$)을 따로 정해야 함 |
 | **Linear D2Z** (Decay-To-Zero) [Bergsma et al., 2025] | $\eta = \eta_{\max}\,(1 - p)$ | 단순, $\eta_{\min}$ 불필요. 코사인과 같거나 더 낫다는 보고 → **이 책의 선택** |
 
-![그림 6-1 코사인 어닐링과 D2Z 비교](images/fig06-01.png)
+<img src="images/fig06-01.png" alt="그림 6-1 코사인 어닐링과 D2Z 비교" width="600">
+
 *그림 6-1 — 회색 구간이 워밍업(여기서는 전체의 5%). 코사인은 처음엔 천천히 내려가다 $0.1\,\eta_{\max}$에서 멈추고, D2Z는 일정한 기울기로 0까지 내려간다. (`ch06/lr_graph.py`로 그린 그래프)*
 
 GPT-3는 전체 학습의 약 0.1%를 워밍업에 썼다. StoryBot은 40,000스텝 중 200스텝(0.5%)이다.
@@ -307,7 +308,8 @@ $$
 \text{값} = (-1)^{\text{부호}} \times 1.\text{가수} \times 2^{\,\text{지수} - \text{편향}}
 $$
 
-![그림 6-2 FP32, FP16, BF16의 비트 구성](images/fig06-02.png)
+<img src="images/fig06-02.png" alt="그림 6-2 FP32, FP16, BF16의 비트 구성" width="600">
+
 *그림 6-2 — 분홍 = 부호부, 노랑 = 지수부(표현 범위), 파랑 = 가수부(정밀도). BF16은 FP32의 지수부 8비트를 그대로 두고 가수부만 7비트로 잘라낸 모양이다.*
 
 | 형식 | 부호 | 지수부 (→ 범위) | 가수부 (→ 정밀도) | 편향 | 표현 범위 | 비고 |
@@ -493,7 +495,8 @@ for i in pbar:
 | 애플 실리콘 (M2 맥북에어) | 약 1일 |
 | CPU | 며칠 이상 (비추천) |
 
-![그림 6-3 검증 데이터에서의 손실 추이](images/fig06-03.png)
+<img src="images/fig06-03.png" alt="그림 6-3 검증 데이터에서의 손실 추이" width="600">
+
 *그림 6-3 — 검증 손실이 약 9.3에서 시작해 수백 스텝 만에 2대로 급락하고, 이후 40,000스텝까지 1.3 근처로 천천히 내려간다. 과대적합 없이 순조롭게 학습되고 있다.*
 
 > 💡 GPU가 없다면 `storybot/download.sh`의 주석을 풀어 학습된 사전 학습 모델(과 6.8의 DPO 모델)을 받을 수 있다.
@@ -549,7 +552,8 @@ The moral value clear story is to always help your friends when they need it.
 2. 문법: 문법적으로 올바른 영어인가
 ```
 
-![그림 6-4 ChatGPT를 사용한 LLM-as-a-Judge 예](images/fig06-04.png)
+<img src="images/fig06-04.png" alt="그림 6-4 ChatGPT를 사용한 LLM-as-a-Judge 예" width="600">
+
 *그림 6-4 — 위의 Max 이야기를 넣으면 일관성 2/5와 함께 "I can't open my back."이 문맥과 맞지 않는다는 이유까지 돌려준다.*
 
 대량 평가는 API로 한다. `07_llm_judge.py`는 `gpt-4o-mini`에 `response_format={"type": "json_object"}`를 지정해 JSON(`coherence`, `grammar`, `comment`)으로 받아 파싱한다.
@@ -682,7 +686,8 @@ $$
 
 여기서 필요한 건 **응답 부분**뿐이다. 프롬프트와 패딩은 마스크로 지운다.
 
-![그림 6-5 DPO의 입력 데이터와 마스크 구조](images/fig06-05.png)
+<img src="images/fig06-05.png" alt="그림 6-5 DPO의 입력 데이터와 마스크 구조" width="600">
+
 *그림 6-5 — 입력은 [프롬프트 | 응답 | 패딩(0)]을 이어 붙인 ID열이고, 마스크는 응답 위치만 1이다. 토큰별 로그 확률에 마스크를 곱하면 응답 부분만 남는다.*
 
 ### 6.8.2 구현
@@ -794,7 +799,8 @@ for i in range(max_iters):
 
 ### 6.8.3 DPO 모델 평가 — `ch06/09_llm_judge.py`
 
-![그림 6-6 손실 추이](images/fig06-06.png)
+<img src="images/fig06-06.png" alt="그림 6-6 손실 추이" width="600">
+
 *그림 6-6 — DPO 손실이 약 0.69에서 시작해 꾸준히 줄고, 약 1,000이터레이션에서 0 근처로 수렴한다.*
 
 > 💡 **왜 0.69에서 시작할까?** — 처음에는 `model`과 `ref_model`이 같으므로 시그모이드 안의 값이 0이다. $-\log\sigma(0) = -\log 0.5 = \log 2 \approx 0.693$.

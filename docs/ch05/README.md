@@ -48,7 +48,8 @@ $$
 
 목표는 $\mathrm{score}_{mn}$이 **$m-n$에만 의존**하게 만드는 것이다. 2차원으로 생각해 보자. 위치 $m$의 쿼리는 $m\theta$만큼, 위치 $n$의 키는 $n\theta$만큼 돌린다.
 
-![그림 5-1 회전한 벡터 사이의 내적 예](images/fig05-01.png)
+<img src="images/fig05-01.png" alt="그림 5-1 회전한 벡터 사이의 내적 예" width="443">
+
 *그림 5-1 — (m=4, n=2)와 (m=5, n=3)은 회전 후 두 벡터 사이의 각도가 같다. 차이 (m−n)θ가 같으면 내적도 같다.*
 
 2차원 회전 행렬:
@@ -184,14 +185,16 @@ $$
 
 $\sigma$는 시그모이드. 대부분의 구현은 $\beta=1$로 고정하며, 이를 **SiLU**(Sigmoid Linear Unit)라 부른다.
 
-![그림 5-2 Swish, GELU, ReLU 비교](images/fig05-02.png)
+<img src="images/fig05-02.png" alt="그림 5-2 Swish, GELU, ReLU 비교" width="600">
+
 *그림 5-2 — ReLU는 음수를 0으로 잘라내지만 Swish·GELU는 음수 영역에서도 작은 값을 흘려보내고 기울기가 매끄럽게 변한다 → 학습이 안정되고 기울기 소실이 덜하다. (그래프는 `ch05/graph.py`로 그릴 수 있다)*
 
 ### 5.2.2 GLU와 그 변형
 
 **GLU(Gated Linear Unit)**: 입력을 두 갈래로 나눠 한쪽은 **특징**, 다른 쪽은 **게이트**(0~1)로 만들고 요소별로 곱한다. 게이트가 "이 특징을 얼마나 통과시킬지"를 정한다.
 
-![그림 5-3 GLU의 구조](images/fig05-03.png)
+<img src="images/fig05-03.png" alt="그림 5-3 GLU의 구조" width="600">
+
 *그림 5-3 — GLU의 구조(⊗는 요소별 곱). 한쪽 Linear 출력에 시그모이드를 씌워 게이트로 쓴다.*
 
 | 변형 | 게이트 활성화 함수 |
@@ -205,10 +208,12 @@ $\sigma$는 시그모이드. 대부분의 구현은 $\beta=1$로 고정하며, �
 
 ### 5.2.3 FFN 구조 비교
 
-![그림 5-4 GPT-2의 FFN 구조](images/fig05-04.png)
+<img src="images/fig05-04.png" alt="그림 5-4 GPT-2의 FFN 구조" width="396">
+
 *그림 5-4 — GPT-2의 FFN: Linear로 확장 → GELU → Linear로 복원 (드롭아웃 생략).*
 
-![그림 5-5 SwiGLU를 사용한 FFN](images/fig05-05.png)
+<img src="images/fig05-05.png" alt="그림 5-5 SwiGLU를 사용한 FFN" width="598">
+
 *그림 5-5 — SwiGLU FFN: 입력을 두 Linear(W, V)로 보내고, 한쪽에만 Swish를 씌워 곱한 뒤 출력 Linear(O)로 되돌린다.*
 
 $$
@@ -297,7 +302,8 @@ class RMSNorm(nn.Module):
 
 ## 5.4 개선된 GPT 구현 — `ch05/04_improved_gpt.py`
 
-![그림 5-6 개선된 GPT의 전체 구조](images/fig05-06.png)
+<img src="images/fig05-06.png" alt="그림 5-6 개선된 GPT의 전체 구조" width="600">
+
 *그림 5-6 — 개선된 GPT의 전체 구조. Embed → (RMSNorm → MHA+RoPE → 잔차, RMSNorm → SwiGLU → 잔차) × N → RMSNorm → Linear → 로짓. 위치 임베딩을 더하는 단계가 사라졌다.*
 
 ### 5.4.1 Block
@@ -374,7 +380,8 @@ print(logits.shape)   # torch.Size([8, 256, 10000])
 
 ### 5.5.1 텍스트 생성의 낭비
 
-![그림 5-7 텍스트 생성 흐름](images/fig05-07.png)
+<img src="images/fig05-07.png" alt="그림 5-7 텍스트 생성 흐름" width="600">
+
 *그림 5-7 — `["A", " cat"]` → `" sat"` 예측 → `["A", " cat", " sat"]`를 통째로 다시 넣어 → `" on"` 예측 → … (실제 입력은 토큰 ID)*
 
 - 매 단계 C개의 확률 분포를 계산하지만 **쓰는 건 마지막 하나**뿐이다.
@@ -385,14 +392,16 @@ print(logits.shape)   # torch.Size([8, 256, 10000])
 
 $Q = XW_q,\ K = XW_k,\ V = XW_v$ 로 만든 뒤 어텐션을 계산한다. 토큰이 2개일 때와 3개일 때를 나란히 놓아 보자.
 
-![그림 5-8 입력 토큰이 2개일 때와 3개일 때의 어텐션 계산](images/fig05-08.png)
+<img src="images/fig05-08.png" alt="그림 5-8 입력 토큰이 2개일 때와 3개일 때의 어텐션 계산" width="600">
+
 *그림 5-8 — 토큰 3개일 때도 [Q₁, Q₂], [K₁, K₂], [V₁, V₂]를 처음부터 다시 계산한다. 앞 단계에서 이미 구한 값이다.*
 
 관찰 두 가지:
 1. 과거 토큰의 **K, V는 변하지 않는다** → 저장해 두고 재사용(캐시).
 2. 필요한 건 마지막 출력뿐이므로 **쿼리는 최신 토큰의 Q₃ 하나**면 된다.
 
-![그림 5-9 KV 캐시를 사용한 효율적인 계산](images/fig05-09.png)
+<img src="images/fig05-09.png" alt="그림 5-9 KV 캐시를 사용한 효율적인 계산" width="600">
+
 *그림 5-9 — 새로 계산하는 건 X₃에서 나온 Q₃, K₃, V₃뿐이다. K₁, K₂, V₁, V₂는 캐시에서 꺼낸다. 출력은 A₃ 한 행.*
 
 > 💡 **Q 캐시는 왜 없나?** 과거 토큰의 쿼리는 과거 출력을 만들 때만 쓰였고 다시 쓸 일이 없다. 다시 쓰이는 건 "새 쿼리가 참조할 대상"인 K와 V뿐이다.
