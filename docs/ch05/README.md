@@ -55,11 +55,9 @@ $$
 2차원 회전 행렬:
 
 $$
-R(\theta)\begin{pmatrix} x \\ y \end{pmatrix}
-=
+R(\theta)\begin{pmatrix} x \\ y \end{pmatrix} =
 \begin{pmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{pmatrix}
-\begin{pmatrix} x \\ y \end{pmatrix}
-=
+\begin{pmatrix} x \\ y \end{pmatrix} =
 \begin{pmatrix} x\cos\theta - y\sin\theta \\ x\sin\theta + y\cos\theta \end{pmatrix}
 $$
 
@@ -84,8 +82,7 @@ $k$번째 쌍 $(x_{2k}, x_{2k+1})$은 위치 $m$에서 $m\theta_k$만큼 회전�
 $$
 \theta_k = \frac{1}{\Theta^{2k/d}} \quad (k = 0, 1, \dots, d/2-1),
 \qquad
-\begin{pmatrix} x'_{2k} \\ x'_{2k+1} \end{pmatrix}
-=
+\begin{pmatrix} x'_{2k} \\ x'_{2k+1} \end{pmatrix} =
 \begin{pmatrix} \cos(m\theta_k) & -\sin(m\theta_k) \\ \sin(m\theta_k) & \cos(m\theta_k) \end{pmatrix}
 \begin{pmatrix} x_{2k} \\ x_{2k+1} \end{pmatrix}
 $$

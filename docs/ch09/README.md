@@ -151,10 +151,10 @@ ZeRO [Rajbhandari et al., 2019]는 이 **중복**을 없애 각 GPU가 일부만
 | ZeRO-3 ($P_{os+g+p}$) | + 파라미터 | $\dfrac{(2+2+K)\Psi}{N_d}$ | **1.9GB** |
 
 > 💡 **숫자 확인** — $\Psi = 7.5\text{B}$, $K=12$, $N_d=64$
-> - Baseline: $16 \times 7.5 = 120$GB
-> - ZeRO-1: $4\times7.5 + 12\times7.5/64 = 30 + 1.41 \approx 31.4$GB
-> - ZeRO-2: $2\times7.5 + 14\times7.5/64 = 15 + 1.64 \approx 16.6$GB
-> - ZeRO-3: $16\times7.5/64 \approx 1.9$GB
+> - Baseline: $`16 \times 7.5 = 120`$GB
+> - ZeRO-1: $`4\times7.5 + 12\times7.5/64 = 30 + 1.41 \approx 31.4`$GB
+> - ZeRO-2: $`2\times7.5 + 14\times7.5/64 = 15 + 1.64 \approx 16.6`$GB
+> - ZeRO-3: $`16\times7.5/64 \approx 1.9`$GB
 >
 > ZeRO-1만으로도 메모리가 1/4로 준다. 옵티마이저 상태가 그만큼 큰 비중을 차지한다는 뜻이다.
 

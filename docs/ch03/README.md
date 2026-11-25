@@ -519,7 +519,7 @@ $$
 
 ## 3.7 베이스라인
 
-[식 3.3]의 $\hat{g}$는 **불편 추정량**이다. 즉 $\mathbb{E}_{\tau \sim \pi_\theta}[\hat{g}] = \nabla_\theta J(\theta)$로, 평균적으로는 정확한 방향을 가리킨다. 문제는 **분산이 크다**는 점이다. 샘플마다 값이 크게 출렁여 학습이 불안정하고 느려진다.
+[식 3.3]의 $`\hat{g}`$는 **불편 추정량**이다. 즉 $`\mathbb{E}_{\tau \sim \pi_\theta}[\hat{g}] = \nabla_\theta J(\theta)`$로, 평균적으로는 정확한 방향을 가리킨다. 문제는 **분산이 크다**는 점이다. 샘플마다 값이 크게 출렁여 학습이 불안정하고 느려진다.
 
 ### 직관: 절댓값이 아니라 상대적 우열로
 
@@ -543,11 +543,11 @@ $$
 \nabla_\theta J(\theta) = \mathbb{E}_{\tau \sim \pi_\theta}\left[ \sum_{t=0}^{T} \nabla_\theta \log \pi_\theta(a_t \mid s_t)\, \big(R(\tau) - b(s_t)\big) \right]
 $$
 
-- 대표적인 베이스라인: **가치 함수** $V^\pi(s) = \mathbb{E}_{\tau \sim \pi_\theta}\left[ R(\tau) \mid s_t = s \right]$
+- 대표적인 베이스라인: **가치 함수** $`V^\pi(s) = \mathbb{E}_{\tau \sim \pi_\theta}\left[ R(\tau) \mid s_t = s \right]`$
 - $R(\tau) - b(s_t)$ = **어드밴티지(advantage)** — 기대치보다 얼마나 좋았는가
 - 베이스라인이 **행동에 의존하지 않는 한**, 넣어도 기댓값은 변하지 않는다(**불편성 유지**). 방향은 그대로 두고 출렁임만 줄인다. → 증명은 부록 C
 
-> 💡 직관적으로는 $\mathbb{E}_{a \sim \pi_\theta}\left[\nabla_\theta \log \pi_\theta(a \mid s)\right] = \nabla_\theta \sum_a \pi_\theta(a \mid s) = \nabla_\theta 1 = 0$이기 때문이다. $b(s)$를 곱한 항은 기댓값이 0이 된다.
+> 💡 직관적으로는 $`\mathbb{E}_{a \sim \pi_\theta}\left[\nabla_\theta \log \pi_\theta(a \mid s)\right] = \nabla_\theta \sum_a \pi_\theta(a \mid s) = \nabla_\theta 1 = 0`$이기 때문이다. $`b(s)`$를 곱한 항은 기댓값이 0이 된다.
 
 ### GRPO: 그룹 평균을 베이스라인으로
 
