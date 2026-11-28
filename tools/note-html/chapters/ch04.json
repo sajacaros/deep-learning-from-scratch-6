@@ -1,0 +1,21 @@
+{
+  "title": "4장 토크나이저 응용편",
+  "description": "4장 토크나이저(응용편) 학습 노트: BPE 학습·인코딩 고속화와 StoryBot 토크나이저",
+  "headline": "4장. 토크나이저 (응용편)",
+  "meta": "중복 제거 → 부분 갱신 → 분할·병렬 → 고속 인코딩 · 12개 절",
+  "searchHint": "예: pair_to_ids, memmap",
+  "sections": [
+    { "match": "2부", "group": "BPE 학습 개선", "rail": "로드맵" },
+    { "match": "4장", "group": "BPE 학습 개선", "rail": "전체 흐름" },
+    { "match": "4.1", "group": "BPE 학습 개선", "rail": "중복 제거" },
+    { "match": "4.2", "group": "BPE 학습 개선", "rail": "부분 갱신" },
+    { "match": "4.3", "group": "BPE 학습 개선", "rail": "분할 처리" },
+    { "match": "4.4", "group": "BPE 학습 개선", "rail": "병렬화" },
+    { "match": "4.5", "group": "평가와 인코딩", "rail": "평가" },
+    { "match": "4.6", "group": "평가와 인코딩", "rail": "고속 병합" },
+    { "match": "4.7", "group": "평가와 인코딩", "rail": "대규모" },
+    { "match": "핵심 정리", "group": "정리", "rail": "정리" },
+    { "match": "앞뒤 장과의 연결", "group": "정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "정리", "rail": "복습" }
+  ]
+}

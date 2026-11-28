@@ -13,3 +13,6 @@
 | [그림 3-9](fig03-09.png) | SFT의 손실 추이 | 1부.pdf p.166 |
 | [그림 3-10](fig03-10.png) | GRPO의 입력 데이터와 마스크 구조 | 1부.pdf p.189 |
 | [그림 3-11](fig03-11.png) | 정답률 추이 | 1부.pdf p.197 |
+| [흐름도 (a)](fig03-flow-a.png) | 사전 학습·SFT·GRPO의 입력·정답·가중치 비교 (노트용으로 새로 그림) | `ch03/flow_graph.py` |
+| [흐름도 (b)](fig03-flow-b.png) | GRPO 반복 한 번: 질문 7+8=의 그룹 8개와 클리핑 (노트용으로 새로 그림) | `ch03/flow_graph.py` |
+| [흐름도 (장 전체)](fig03-d01.png) | 3장 전체 흐름 (노트용으로 새로 그림, mermaid 대체) | `ch03/diagrams.py` |

@@ -1,0 +1,15 @@
+{
+  "title": "0장 LLM이 만들어지기까지",
+  "description": "0장 학습 노트: 언어 모델의 구성 요소, 사전 학습, 사후 학습(SFT·강화 학습), CodeBot 로드맵",
+  "headline": "0장. LLM이 만들어지기까지",
+  "meta": "구성 요소 → 사전 학습 → 사후 학습 → CodeBot 로드맵 · 6개 절",
+  "searchHint": "예: 자기 지도 학습, RLHF",
+  "sections": [
+    { "match": "1.", "group": "LLM을 만드는 과정", "rail": "구성 요소" },
+    { "match": "2.", "group": "LLM을 만드는 과정", "rail": "사전 학습" },
+    { "match": "3.", "group": "LLM을 만드는 과정", "rail": "사후 학습" },
+    { "match": "4.", "group": "CodeBot과 정리", "rail": "로드맵" },
+    { "match": "5.", "group": "CodeBot과 정리", "rail": "정리" },
+    { "match": "6.", "group": "CodeBot과 정리", "rail": "복습" }
+  ]
+}

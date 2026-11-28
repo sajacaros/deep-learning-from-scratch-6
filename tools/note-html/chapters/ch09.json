@@ -1,0 +1,19 @@
+{
+  "title": "9장 학습 도전편",
+  "description": "9장 학습(도전편) 학습 노트: 기울기 누적·체크포인트, DDP, ZeRO, Muon, WebBot 사전 학습",
+  "headline": "9장. 학습 (도전편)",
+  "meta": "기울기 누적 → DDP·ZeRO → Muon → WebBot 150M 사전 학습 · 10개 절",
+  "searchHint": "예: no_sync, ZeRO-3, Muon",
+  "sections": [
+    { "match": "9.1", "group": "GPU 한 장의 메모리", "rail": "누적" },
+    { "match": "9.2", "group": "GPU 한 장의 메모리", "rail": "체크포인트" },
+    { "match": "9.3", "group": "여러 GPU와 옵티마이저", "rail": "DDP" },
+    { "match": "9.4", "group": "여러 GPU와 옵티마이저", "rail": "ZeRO" },
+    { "match": "9.5", "group": "여러 GPU와 옵티마이저", "rail": "Muon" },
+    { "match": "9.6", "group": "WebBot 학습", "rail": "W&B" },
+    { "match": "9.7", "group": "WebBot 학습", "rail": "WebBot" },
+    { "match": "핵심 정리", "group": "정리", "rail": "정리" },
+    { "match": "다른 장과의 연결", "group": "정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "정리", "rail": "복습" }
+  ]
+}

@@ -7,7 +7,7 @@
 .content pre.code-block code{font-family:"SFMono-Regular",Consolas,"Liberation Mono","DejaVu Sans Mono","Ubuntu Mono",monospace;font-size:13px}
 .chapter-code{margin:-6px 0 22px;font-size:14px;color:var(--ink-soft)}
 .mermaid-figure{margin:1.6em 0;overflow-x:auto;text-align:center}
-.mermaid-figure svg{max-width:none;height:auto}
+.mermaid-figure svg{max-width:100%;height:auto}
 /* 접이식 정답: <details><summary>정답 보기</summary> … </details> */
 .content details{margin:10px 0 22px}
 .content details>summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;

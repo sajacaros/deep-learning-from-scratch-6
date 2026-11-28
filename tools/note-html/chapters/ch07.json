@@ -1,0 +1,20 @@
+{
+  "title": "7장 토크나이저 도전편",
+  "description": "7장 토크나이저(도전편) 학습 노트: WebBot 토크나이저, 고속화, 특수 토큰, 다른 토크나이저",
+  "headline": "7장. 토크나이저 (도전편)",
+  "meta": "WebBot 토크나이저 → 병목 찾기 → 러스트·C++ → 특수 토큰 → 토크나이저 없는 모델 · 12개 절",
+  "searchHint": "예: cProfile, 하모니 포맷, uint16",
+  "sections": [
+    { "match": "3부 로드맵: WebBot 만들기", "group": "WebBot 토크나이저", "rail": "로드맵" },
+    { "match": "7장 전체 흐름", "group": "WebBot 토크나이저", "rail": "전체 흐름" },
+    { "match": "7.1", "group": "WebBot 토크나이저", "rail": "어휘 5만" },
+    { "match": "7.2", "group": "더 나아가기", "rail": "병목" },
+    { "match": "7.3", "group": "더 나아가기", "rail": "러스트" },
+    { "match": "7.4", "group": "더 나아가기", "rail": "특수 토큰" },
+    { "match": "7.5", "group": "더 나아가기", "rail": "다른 방식" },
+    { "match": "7.6", "group": "더 나아가기", "rail": "바이트" },
+    { "match": "핵심 정리", "group": "정리", "rail": "정리" },
+    { "match": "앞뒤 장과의 연결", "group": "정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "정리", "rail": "복습" }
+  ]
+}

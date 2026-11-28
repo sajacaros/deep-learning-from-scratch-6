@@ -1,0 +1,20 @@
+{
+  "title": "6장 학습 응용편",
+  "description": "6장 학습(응용편) 학습 노트: AdamW, 학습률 스케줄, 혼합 정밀도, StoryBot 사전 학습, LLM-as-a-Judge, DPO",
+  "headline": "6장. 학습 (응용편)",
+  "meta": "AdamW → 학습률 스케줄 → 혼합 정밀도 → 사전 학습 → DPO · 11개 절",
+  "searchHint": "예: AdamW, BF16, DPO",
+  "sections": [
+    { "match": "6.1", "group": "옵티마이저", "rail": "AdamW" },
+    { "match": "6.2", "group": "옵티마이저", "rail": "구현" },
+    { "match": "6.3", "group": "옵티마이저", "rail": "스케줄" },
+    { "match": "6.4", "group": "사전 학습", "rail": "혼합정밀도" },
+    { "match": "6.5", "group": "사전 학습", "rail": "사전학습" },
+    { "match": "6.6", "group": "사전 학습", "rail": "평가" },
+    { "match": "6.7", "group": "DPO와 정리", "rail": "RLHF·DPO" },
+    { "match": "6.8", "group": "DPO와 정리", "rail": "DPO 구현" },
+    { "match": "핵심 정리", "group": "DPO와 정리", "rail": "정리" },
+    { "match": "다른 장과의 연결", "group": "DPO와 정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "DPO와 정리", "rail": "복습" }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "title": "5장 모델 응용편",
+  "description": "5장 모델(응용편) 학습 노트: RoPE, SwiGLU, RMSNorm으로 개선한 GPT와 KV 캐시",
+  "headline": "5장. 모델 (응용편)",
+  "meta": "RoPE → SwiGLU → RMSNorm → 개선된 GPT → KV 캐시 · 8개 절",
+  "searchHint": "예: RoPE, KV 캐시",
+  "sections": [
+    { "match": "5.1", "group": "부품 교체", "rail": "RoPE" },
+    { "match": "5.2", "group": "부품 교체", "rail": "SwiGLU" },
+    { "match": "5.3", "group": "부품 교체", "rail": "RMSNorm" },
+    { "match": "5.4", "group": "완성과 생성", "rail": "개선 GPT" },
+    { "match": "5.5", "group": "완성과 생성", "rail": "KV 캐시" },
+    { "match": "핵심 정리", "group": "완성과 생성", "rail": "정리" },
+    { "match": "이전·이후 장과의 연결", "group": "완성과 생성", "rail": "연결" },
+    { "match": "복습 질문", "group": "완성과 생성", "rail": "복습" }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "title": "8장 모델 도전편",
+  "description": "8장 모델(도전편) 학습 노트: 스케일링 법칙, Flash Attention, GQA, MoE, torch.compile, 컨텍스트 길이 확장",
+  "headline": "8장. 모델 (도전편)",
+  "meta": "친칠라 법칙 → Flash Attention → GQA → MoE · torch.compile · YaRN · 9개 절",
+  "searchHint": "예: 친칠라, GQA, 온라인 소프트맥스",
+  "sections": [
+    { "match": "8.1", "group": "WebBot에 반영", "rail": "모델 크기" },
+    { "match": "8.2", "group": "WebBot에 반영", "rail": "Flash" },
+    { "match": "8.3", "group": "WebBot에 반영", "rail": "GQA" },
+    { "match": "8.4", "group": "더 도전하기", "rail": "MoE" },
+    { "match": "8.5", "group": "더 도전하기", "rail": "compile" },
+    { "match": "8.6", "group": "더 도전하기", "rail": "길이 확장" },
+    { "match": "핵심 정리", "group": "정리", "rail": "정리" },
+    { "match": "이전·이후 장과의 연결", "group": "정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "정리", "rail": "복습" }
+  ]
+}

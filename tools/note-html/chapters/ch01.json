@@ -1,0 +1,21 @@
+{
+  "title": "1장 토크나이저 기본편",
+  "description": "1장 토크나이저(기본편) 학습 노트: 문자·바이트 단위에서 BPE, 특수 토큰, 사전 토큰화, CodeBot 토크나이저까지",
+  "headline": "1장. 토크나이저 (기본편)",
+  "meta": "문자 → 바이트 → BPE → 특수 토큰·사전 토큰화 → CodeBot 토크나이저 · 12개 절",
+  "searchHint": "예: 병합 규칙, 사전 토큰화",
+  "sections": [
+    { "match": "1.1", "group": "문자에서 BPE로", "rail": "문자" },
+    { "match": "1.2", "group": "문자에서 BPE로", "rail": "바이트" },
+    { "match": "1.3", "group": "문자에서 BPE로", "rail": "BPE 학습" },
+    { "match": "1.4", "group": "GPT-2 방식", "rail": "인코딩" },
+    { "match": "1.5", "group": "GPT-2 방식", "rail": "특수 토큰" },
+    { "match": "1.6", "group": "GPT-2 방식", "rail": "사전 토큰" },
+    { "match": "1.7", "group": "CodeBot 토크나이저", "rail": "학습" },
+    { "match": "1.8", "group": "CodeBot 토크나이저", "rail": "평가" },
+    { "match": "1.9", "group": "CodeBot 토크나이저", "rail": "bin 저장" },
+    { "match": "핵심 정리", "group": "정리", "rail": "정리" },
+    { "match": "이후 장과의 연결", "group": "정리", "rail": "연결" },
+    { "match": "복습 질문", "group": "정리", "rail": "복습" }
+  ]
+}
