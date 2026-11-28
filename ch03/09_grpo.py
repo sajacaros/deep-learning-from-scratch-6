@@ -3,6 +3,7 @@ os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 sys.path.append('.')
 
 from itertools import cycle
+import json
 import re
 import torch
 import torch.nn.functional as F
@@ -11,7 +12,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from codebot.model import GPT
 from codebot.tokenizer import BPETokenizer
-from codebot.utils import generate, get_device
+from codebot.utils import generate, get_device, get_vocab_size, codebot_paths
 
 
 # 데이터셋
@@ -131,9 +132,10 @@ def grpo_loss(model, old_model, ids, mask, advantages, epsilon=0.2):
 
 # 설정
 device = get_device()
-tokenizer_path = 'codebot/merge_rules.pkl'
-sft_model_path = 'codebot/model_sft.pt'
-grpo_model_save_path = 'codebot/model_grpo.pt'
+paths = codebot_paths(get_vocab_size())   # 기본 2000 (책은 1000, VOCAB=1000으로 실행)
+tokenizer_path = paths['tokenizer']
+sft_model_path = paths['sft']
+grpo_model_save_path = paths['grpo']
 
 # 하이퍼파라미터
 learning_rate = 7e-6
@@ -143,6 +145,7 @@ eval_interval = 10
 epsilon = 0.2   # 클리핑 범위
 group_size = 8  # 그룹 크기
 batch_size = 32
+torch.manual_seed(0)
 
 # 초기화
 tokenizer = BPETokenizer.load_from(tokenizer_path)
@@ -203,6 +206,8 @@ for i in pbar:
 
 # 학습된 모델 저장
 model.save(grpo_model_save_path)
+with open(f"codebot/log_grpo{paths['suffix']}.json", 'w') as f:
+    json.dump({'eval_interval': eval_interval, 'accuracies': accuracies}, f)
 
 plt.figure()
 steps = list(range(0, len(accuracies) * eval_interval, eval_interval))
@@ -212,4 +217,4 @@ plt.ylabel('Accuracy (%)')
 plt.title('GRPO Training')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("loss_grpo.png")
+plt.savefig(f"loss_grpo{paths['suffix']}.png")

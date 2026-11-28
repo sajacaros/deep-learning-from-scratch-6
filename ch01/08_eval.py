@@ -3,9 +3,10 @@ os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 sys.path.append('.')
 
 from codebot.tokenizer import BPETokenizer
+from codebot.utils import get_vocab_size, codebot_paths
 
 
-tokenizer = BPETokenizer.load_from("codebot/merge_rules.pkl")
+tokenizer = BPETokenizer.load_from(codebot_paths(get_vocab_size())['tokenizer'])   # 기본 2000
 
 print("처음에 학습된 10개:")
 for token_id in range(256, 266):
@@ -14,7 +15,8 @@ for token_id in range(256, 266):
     print(f"  ID {token_id}: '{text}'")
 
 print("\n마지막에 학습된 10개:")
-for token_id in range(990, 1000):
+last = tokenizer.end_token_id   # 종료 토큰(어휘의 마지막 번호) 바로 앞까지
+for token_id in range(last - 10, last):
     byte_seq = tokenizer.id_to_bytes[token_id]
     text = byte_seq.decode("utf-8")
     print(f"  ID {token_id}: '{text}'")

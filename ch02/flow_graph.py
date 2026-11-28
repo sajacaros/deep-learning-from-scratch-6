@@ -1,5 +1,6 @@
 # 2장 노트의 그림 "배치 하나가 GPT를 지나 학습되는 흐름"을 그린다.
-# 입력은 CodeBot 학습 데이터(codebot/tiny_codes.bin)에서 3장 TokenDataset과 같은 방식으로 잘라 낸 실제 토큰이다.
+# 입력은 CodeBot 학습 데이터(codebot/tiny_codes_2000.bin, 어휘 2,000)에서 3장 TokenDataset과 같은 방식으로 잘라 낸 실제 토큰이다.
+# 책과 같은 어휘 1,000으로 그리려면 VOCAB=1000을 붙여 실행한다(tiny_codes.bin).
 # 실제 학습은 B=32, C=256(ch03/01_pretrain.py)이지만, 그림에서는 B=2, C=5로 줄였다.
 # 실행(저장소 루트에서): python ch02/flow_graph.py → docs/ch02/images/fig02-flow-a.png, fig02-flow-b.png
 # 나눔명조(NanumMyeongjo) 폰트가 필요하다.
@@ -17,12 +18,16 @@ from matplotlib.transforms import Bbox
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT))
 from codebot.tokenizer import BPETokenizer
+from codebot.utils import get_vocab_size, codebot_paths
 
 # ---------------------------------------------------------------- 데이터
 B, C = 2, 5
-STARTS = [103, 53]           # tiny_codes.bin 안의 시작 위치(문장 0, 문장 1)
-tok = BPETokenizer.load_from(str(ROOT / "codebot/merge_rules.pkl"))
-ids = np.fromfile(ROOT / "codebot/tiny_codes.bin", dtype=np.uint16)
+V = get_vocab_size()
+PATHS = codebot_paths(V)
+# 데이터 안의 시작 위치(문장 0 = "␣item ␣= ...", 문장 1 = "␣t as ks ..."). 같은 원문 위치를 어휘별로 맞춘 값이다.
+STARTS = {1000: [103, 53], 2000: [88, 43]}[V]
+tok = BPETokenizer.load_from(str(ROOT / PATHS["tokenizer"]))
+ids = np.fromfile(ROOT / PATHS["data"], dtype=np.uint16)
 X_IDS = [ids[s:s + C].tolist() for s in STARTS]            # x: (B, C)
 Y_IDS = [ids[s + 1:s + C + 1].tolist() for s in STARTS]    # y: 한 칸 민 것
 
@@ -104,7 +109,7 @@ ax.add_patch(FancyBboxPatch((0.4, 30.45), 14.4, 1.3, boxstyle="round,pad=0,round
 ax.text(14.8, 32.0, "학습 전에 한 번만 (1장)", fontsize=10, color=GRAY, va="center", ha="right")
 for cx, t1, t2 in [(2.55, "tiny_codes.txt", "파이썬 코드 원문"),
                    (7.45, "BPE 토크나이저", "ch01/09_bpe_encode.py"),
-                   (12.35, "tiny_codes.bin", f"토큰 ID {len(ids):,}개")]:
+                   (12.35, Path(PATHS["data"]).name, f"토큰 ID {len(ids):,}개")]:
     box(cx, 31.05, 3.9, 0.85, "", "white" if cx != 7.45 else C_EMB)
     ax.text(cx, 31.2, t1, fontsize=11.5, ha="center", va="center", zorder=5)
     ax.text(cx, 30.85, t2, fontsize=9, color=GRAY, ha="center", va="center", zorder=5)
@@ -130,7 +135,7 @@ arrow(X, 26.62, X, 25.45)
 # 임베딩: 표 크기를 함께 적는다
 box(X - 2.0, 24.95, 4.3, 0.95, "", C_EMB)
 ax.text(X - 2.0, 25.15, "토큰 임베딩", fontsize=12, ha="center", va="center", zorder=5)
-ax.text(X - 2.0, 24.72, "표 (1000, 384) — 행 수 = 어휘 크기", fontsize=9.5, color=GRAY, ha="center", va="center", zorder=5)
+ax.text(X - 2.0, 24.72, f"표 ({V}, 384) — 행 수 = 어휘 크기", fontsize=9.5, color=GRAY, ha="center", va="center", zorder=5)
 box(X + 2.6, 24.95, 4.3, 0.95, "", C_EMB)
 ax.text(X + 2.6, 25.15, "위치 임베딩 (0~4행)", fontsize=12, ha="center", va="center", zorder=5)
 ax.text(X + 2.6, 24.72, "표 (256, 384) — 행 수 = 최대 길이", fontsize=9.5, color=GRAY, ha="center", va="center", zorder=5)
@@ -195,9 +200,9 @@ shape(X + 0.45, 12.8, "(2, 5, 384)")
 arrow(X, 12.52, X, 11.75)
 box(X, 11.4, 3.4, 0.7, "LayerNorm", C_LN, fs=11.5)
 arrow(X, 11.05, X, 10.45)
-box(X, 10.05, 5.0, 0.8, r"Linear 384$\to$1000  (unembed)", C_OUT, fs=11.5)
+box(X, 10.05, 5.0, 0.8, r"Linear 384$\to$" + f"{V}  (unembed)", C_OUT, fs=11.5)
 arrow(X, 9.65, X, 9.1)
-shape(X + 0.3, 9.4, "logits (2, 5, 1000)")
+shape(X + 0.3, 9.4, f"logits (2, 5, {V})")
 ax.plot([X - 4.3, X - 4.3 - 0.4, X - 4.3 - 0.4], [24.95, 24.95, 10.05], color=GRAY, lw=1.0, ls=(0, (4, 3)), zorder=0)
 ax.plot([X - 4.7, X - 2.5], [10.05, 10.05], color=GRAY, lw=1.0, ls=(0, (4, 3)), zorder=0)
 ax.text(X - 4.9, 17.5, "가중치 공유", rotation=90, fontsize=10.5, color=GRAY, ha="right", va="center")
@@ -316,7 +321,7 @@ token_matrix(hx + 2.4, cy - 3.35, 12, cw=0.34, label="어텐션 출력  (5, 384)
 
 ax.text(OX, 3.0, "• 문장 1도 같은 계산을 따로 한다. 배치 축 B와 헤드 축 H는 행렬곱의 배치 축이라 동시에 계산되고,\n"
         "   문장끼리는 정보가 섞이지 않는다. 실제 텐서는 (B, H, C, C) = (2, 6, 5, 5).\n"
-        "• 토큰은 tiny_codes.bin의 실제 BPE 토큰(␣는 앞 공백). 점수·가중치 값은 설명용 예시.\n"
+        f"• 토큰은 {Path(PATHS['data']).name}의 실제 BPE 토큰(␣는 앞 공백). 점수·가중치 값은 설명용 예시.\n"
         "• 실제 학습은 B=32, C=256 (ch03/01_pretrain.py). 그림은 B=2, C=5로 줄인 것.",
         fontsize=10.5, color=INK, va="center", linespacing=1.7)
 

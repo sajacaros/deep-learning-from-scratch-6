@@ -1,0 +1,68 @@
+===== vocab 1000: 'def'로 생성한 첫 5개 =====
+--- 문법 OK ---
+def call():
+    pass
+
+X = np.array([1,2,3,4])
+Y = np.array([0,30,40,5])
+
+model = LinearRegression()
+model.fit(X, Y)
+
+# Predict estimator
+print(model.predict(X)) # Output: [1]
+
+--- 문법 X ---
+def concurrent_numeric(num):
+    if num == 1:
+        return 0
+
+    # Use compare
+    return 1
+
+    #Call the function with construct decimal places
+    """
+    result = 1
+    for i in range(1, num + 1):
+        result *= i
+        num = num + 1
+
+    return result
+
+num = "101010101"
+num = int(input("Enter a number: "))
+print(convert_to_base(num))
+
+--- 문법 X ---
+def find_empty_machine():
+        categories = arr.index(".")
+        current = arr.index
+        for i in categories:
+            if current == bigories and current in categories:
+                current = current
+            else:
+                current = categories[current]
+            low = current.index(current)
+            current.categories[current] = current
+    return best
+
+--- 문법 OK ---
+def square(num):
+    """
+    Calculates the square root of a given number.
+    :return:
+        int: The square root of the given number.
+    """
+    return num**0.5
+
+if __name__ == '__main__':
+    num = int(input('Enter the first number: '))
+    print(square(num))
+
+--- 문법 X ---
+def", status):
+    while status_code != 200:
+        status_code = atus_code
+        status_code = status_code
+        return response.status_code
+

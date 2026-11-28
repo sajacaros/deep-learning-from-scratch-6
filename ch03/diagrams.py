@@ -15,16 +15,16 @@ W, H = 3.45, 1.75
 y1, y2 = 4.25, 1.05
 xs = [1.85 + i * 4.6 for i in range(4)]
 row1 = [
-    ("tiny_codes.bin", "토큰 ID 약 268만 개", False),
+    ("tiny_codes_2000.bin", "토큰 ID 약 231만 개", False),
     ("3.1 사전 학습", "다음 토큰 예측\n20,000회", True),
-    ("model_pretrain.pt", "텍스트 이어 쓰기", False),
+    ("model_pretrain_2000.pt", "텍스트 이어 쓰기", False),
     ("3.3 SFT", "알파카 포맷 + 마스크\n500회", True),
 ]
 row2 = [
-    ("model_sft.pt", "대화 가능", False),
+    ("model_sft_2000.pt", "대화 가능", False),
     ("3.5~3.8 이론", "정책 경사 → 베이스라인\n→ 중요도 샘플링 → 클리핑", False),
     ("3.9 GRPO", "그룹 평균 = 베이스라인\n500회", True),
-    ("model_grpo.pt", "덧셈 정답률 80%+", False),
+    ("model_grpo_2000.pt", "덧셈 정답률 96%", False),
 ]
 n1 = [d.box(x, y1, t, sub=s, w=W, h=H, fill=f) for x, (t, s, f) in zip(xs, row1)]
 n2 = [d.box(x, y2, t, sub=s, w=W, h=H, fill=f) for x, (t, s, f) in zip(xs, row2)]

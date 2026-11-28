@@ -11,20 +11,22 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 from codebot.model import GPT
 from codebot.tokenizer import BPETokenizer
-from codebot.utils import get_device
+from codebot.utils import get_device, get_vocab_size, codebot_paths
 
 # 설정
 device = get_device()
 data_path = 'codebot/tiny_codes_sft.json'
-tokenizer_path = 'codebot/merge_rules.pkl'
-pretrain_model_path = 'codebot/model_pretrain.pt'
-sft_model_save_path = 'codebot/model_sft.pt'
+paths = codebot_paths(get_vocab_size())   # 기본 2000 (책은 1000, VOCAB=1000으로 실행)
+tokenizer_path = paths['tokenizer']
+pretrain_model_path = paths['pretrain']
+sft_model_save_path = paths['sft']
 
 # 하이퍼파라미터
 context_len = 256
 batch_size = 32
 learning_rate = 3e-4
 max_iters = 500
+torch.manual_seed(0)
 
 class SFTDataset(Dataset):
     def __init__(self, data_path, tokenizer, context_len):
@@ -116,7 +118,7 @@ plt.plot(losses)
 plt.xlabel('Iteration')
 plt.ylabel('Loss')
 plt.grid(True)
-plt.savefig('loss_sft.png')
+plt.savefig(f"loss_sft{paths['suffix']}.png")
 
 # 모델 저장
 model.save(sft_model_save_path)

@@ -4,9 +4,10 @@ sys.path.append('.')
 
 import json
 from codebot.tokenizer import BPETokenizer
+from codebot.utils import get_vocab_size, codebot_paths
 
 # 토크나이저 불러오기
-tokenizer = BPETokenizer.load_from('codebot/merge_rules.pkl')
+tokenizer = BPETokenizer.load_from(codebot_paths(get_vocab_size())['tokenizer'])   # 기본 2000
 
 # JSON 데이터 읽기
 with open('codebot/tiny_codes_sft.json') as f:
@@ -29,4 +30,5 @@ print(text)
 # 토큰화
 ids = tokenizer.encode(text)
 print(ids)
-# [35, 35, 35, 962, 519, 117, 389, 58, 10, 846, 10, 10, 35, 35, 35, 752, 568, 58, 10, 846, 46, 840, 104, 277, 280, 356, 473, 708, 108, 112, 930, 657, 63, 999]
+# [35, 35, 35, 962, 519, 117, 389, 58, 10, 846, 10, 10, 35, 35, 35, 752, 568, 58, 10, 846, 46, 840, 1674, 1053, 473, 708, 108, 112, 932, 657, 63, 1999]
+# (어휘 1,000이면 34개: ' What'·' can'이 각각 두 토큰으로 갈라지고 끝 토큰은 999)

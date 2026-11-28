@@ -47,3 +47,40 @@ def get_device():
         return torch.device('mps')
     else:
         return torch.device('cpu')
+
+# ── 어휘 크기 실험 (책 밖 보충) ─────────────────────────────────
+# 이 저장소는 어휘 2,000을 기본으로 쓴다(책은 1,000). 환경 변수 VOCAB으로 바꿀 수 있다.
+#   python ch03/01_pretrain.py              → 어휘 2,000
+#   VOCAB=1000 python ch03/01_pretrain.py   → 책과 같은 어휘 1,000
+DEFAULT_VOCAB_SIZE = 2000
+
+
+def get_vocab_size():
+    import os
+    return int(os.environ.get('VOCAB', DEFAULT_VOCAB_SIZE))
+
+
+def codebot_paths(vocab_size):
+    """어휘 크기별 파일 경로. 1000은 책·다운로드 파일과 같은 원래 이름, 그 밖에는 _2000처럼 접미사를 붙인다."""
+    s = '' if vocab_size == 1000 else f'_{vocab_size}'
+    return {
+        'data': f'codebot/tiny_codes{s}.bin',
+        'tokenizer': f'codebot/merge_rules{s}.pkl',
+        'pretrain': f'codebot/model_pretrain{s}.pt',
+        'sft': f'codebot/model_sft{s}.pt',
+        'grpo': f'codebot/model_grpo{s}.pt',
+        'suffix': s,
+    }
+
+
+def split_by_docs(ids, end_token_id, val_frac=0.02):
+    """끝에서 val_frac만큼의 '문서'를 검증용으로 뗀다.
+
+    토큰 수가 아니라 문서 수로 자르므로, 어휘 크기가 달라도 검증 문서가 똑같다.
+    반환: (train_ids, val_ids)
+    """
+    import numpy as np
+    ends = np.flatnonzero(ids == end_token_id)        # 각 문서 끝(종료 토큰) 위치
+    n_val = max(1, int(len(ends) * val_frac))
+    cut = ends[-n_val - 1] + 1                        # 검증 첫 문서의 시작
+    return ids[:cut], ids[cut:]

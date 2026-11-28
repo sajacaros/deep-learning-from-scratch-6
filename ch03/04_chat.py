@@ -4,13 +4,14 @@ sys.path.append('.')
 
 from codebot.model import GPT
 from codebot.tokenizer import BPETokenizer
-from codebot.utils import generate, get_device
+from codebot.utils import generate, get_device, get_vocab_size, codebot_paths
 
 # 설정
 device = get_device()
-model_path = 'codebot/model_sft.pt'
-# model_path = 'codebot/model_grpo.pt'
-tokenizer_path = 'codebot/merge_rules.pkl'
+paths = codebot_paths(get_vocab_size())   # 기본 2000 (책은 1000, VOCAB=1000으로 실행)
+model_path = paths['sft']
+# model_path = paths['grpo']
+tokenizer_path = paths['tokenizer']
 max_new_tokens = 200
 temperature = 1.0
 

@@ -99,7 +99,7 @@ class GPT(nn.Module):
         return model
 
 
-vocab_size = 1000
+vocab_size = 2000   # 이 저장소의 CodeBot 어휘 (책은 1000)
 max_context_len = 256
 embed_dim = 384
 n_head = 6

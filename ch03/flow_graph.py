@@ -1,8 +1,8 @@
 # 3장 노트의 그림 "세 단계 학습을 한눈에"를 그린다.
 # (a) 사전 학습·SFT·GRPO가 같은 "실제 다음 토큰의 확률"에 서로 다른 가중치를 주는 모습
 # (b) GRPO 반복 한 번: 질문 하나(7+8=)에 대한 그룹 8개, 보상·어드밴티지, 배치, 클리핑
-# 토큰은 codebot/merge_rules.pkl 토크나이저로 실제로 인코딩한 것이다.
-# 사전 학습 입력은 codebot/tiny_codes.bin의 실제 토큰(2장 흐름도와 같은 위치)이고,
+# 토큰은 codebot/merge_rules_2000.pkl 토크나이저(어휘 2,000)로 실제로 인코딩한 것이다. 책의 1,000으로 그리려면 VOCAB=1000.
+# 사전 학습 입력은 codebot/tiny_codes_2000.bin의 실제 토큰(2장 흐름도와 같은 위치)이고,
 # SFT 샘플은 codebot/tiny_codes_sft.json에 있는 "3+5=" → "8"이다.
 # GRPO의 응답 8개는 설명용 예시다(보상·어드밴티지·패딩은 ch03/09_grpo.py와 같은 방식으로 계산).
 # 실행(저장소 루트에서): .venv/bin/python ch03/flow_graph.py → docs/ch03/images/fig03-flow-a.png, fig03-flow-b.png
@@ -23,8 +23,10 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT))
 from codebot.tokenizer import BPETokenizer
+from codebot.utils import get_vocab_size, codebot_paths
 
-tok = BPETokenizer.load_from(str(ROOT / "codebot/merge_rules.pkl"))
+PATHS = codebot_paths(get_vocab_size())
+tok = BPETokenizer.load_from(str(ROOT / PATHS["tokenizer"]))
 EOT = tok.end_token_id
 
 
@@ -36,9 +38,10 @@ def show(i):
 
 
 # ---------------------------------------------------------------- 데이터
-# ① 사전 학습: tiny_codes.bin에서 길이 8을 잘라 x, 한 칸 민 y (TokenDataset과 같은 방식)
-ids_all = np.fromfile(ROOT / "codebot/tiny_codes.bin", dtype=np.uint16)
-S, PC = 103, 8
+# ① 사전 학습: tiny_codes_2000.bin에서 길이 8을 잘라 x, 한 칸 민 y (TokenDataset과 같은 방식)
+ids_all = np.fromfile(ROOT / PATHS["data"], dtype=np.uint16)
+S = {1000: 103, 2000: 88}[get_vocab_size()]   # 2장 흐름도와 같은 원문 위치("␣item ␣= ␣input ...")
+PC = 8
 PT_X = ids_all[S:S + PC].tolist()
 PT_Y = ids_all[S + 1:S + PC + 1].tolist()
 
@@ -133,10 +136,12 @@ ax.text(0.3, H - 0.4, "(a)  세 단계 모두 '실제 다음 토큰의 확률'�
         fontsize=14, fontweight="bold", color=INK, va="center")
 
 # 모델 사슬
-chain = [("무작위 GPT", "11M 파라미터", "white"),
-         ("model_pretrain.pt", "이어 쓰기", BLUEL),
-         ("model_sft.pt", "대화 가능", GREENL),
-         ("model_grpo.pt", "덧셈 80%+", ORANGEL)]
+N_PARAMS = {1000: "11.1M", 2000: "11.5M"}[get_vocab_size()]
+GRPO_ACC = {1000: "덧셈 80%+", 2000: "덧셈 96%"}[get_vocab_size()]   # 2000은 3.10절 실험 결과(78/81)
+chain = [("무작위 GPT", f"{N_PARAMS} 파라미터", "white"),
+         (Path(PATHS["pretrain"]).name, "이어 쓰기", BLUEL),
+         (Path(PATHS["sft"]).name, "대화 가능", GREENL),
+         (Path(PATHS["grpo"]).name, GRPO_ACC, ORANGEL)]
 steps = ["① 사전 학습\n20,000회 · lr 3e-4", "② SFT\n500회 · lr 3e-4", "③ GRPO\n500회 · lr 7e-6"]
 cy, bw, gap = H - 1.6, 1.6, 0.95
 for k, (t1, t2, fc) in enumerate(chain):
@@ -222,7 +227,7 @@ sft_groups = [(GA, 9, "-100 ×9", "0", 1.45, "off"),
 xe = strip(sft_groups, yx, yy, yw, (GREENL, GREEN), GREENL)
 ax.text(CX0, yw - 0.5, "loss = −평균 log p(레이블)  — -100이 아닌 위치만 (ignore_index). 이 샘플은 256칸 중 2칸",
         fontsize=10.5, va="center", color=INK)
-ax.text(CX0, yw - 0.85, "프롬프트의 마지막 ↵ 위치가 첫 응답 토큰 '8'을, '8' 위치가 <eot>(999)를 예측한다. 회색 칸 = 고정 길이 256까지 채운 패딩",
+ax.text(CX0, yw - 0.85, f"프롬프트의 마지막 ↵ 위치가 첫 응답 토큰 '8'을, '8' 위치가 <eot>({EOT})를 예측한다. 회색 칸 = 고정 길이 256까지 채운 패딩",
         fontsize=9.5, va="center", color=GRAY)
 
 # ---------------- ③ GRPO

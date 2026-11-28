@@ -7,13 +7,14 @@ import torch
 import torch.nn.functional as F
 from codebot.model import GPT
 from codebot.tokenizer import BPETokenizer
-from codebot.utils import get_device
+from codebot.utils import get_device, get_vocab_size, codebot_paths
 
 
 # 설정
 device = get_device()
-model_path = 'codebot/model_pretrain.pt'
-tokenizer_path = 'codebot/merge_rules.pkl'
+paths = codebot_paths(get_vocab_size())   # 기본 2000 (책은 1000, VOCAB=1000으로 실행)
+model_path = paths['pretrain']
+tokenizer_path = paths['tokenizer']
 
 # 생성 설정
 prompt = "def"        # 생성을 시작할 프롬프트

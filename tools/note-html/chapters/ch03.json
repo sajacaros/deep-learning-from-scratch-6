@@ -2,7 +2,7 @@
   "title": "3장 학습 기본편",
   "description": "3장 학습(기본편) 학습 노트: 사전 학습, SFT, 정책 경사법에서 GRPO까지",
   "headline": "3장. 학습 (기본편)",
-  "meta": "사전 학습 → SFT → 정책 경사 → GRPO · 12개 절",
+  "meta": "사전 학습 → SFT → 정책 경사 → GRPO · 어휘 비교 · 13개 절",
   "searchHint": "예: 알파카 포맷, 클리핑",
   "sections": [
     { "match": "3.1", "group": "사전 학습과 SFT", "rail": "사전 학습" },
@@ -14,6 +14,7 @@
     { "match": "3.7", "group": "강화 학습 이론", "rail": "베이스라인" },
     { "match": "3.8", "group": "강화 학습 이론", "rail": "클리핑" },
     { "match": "3.9", "group": "GRPO와 정리", "rail": "GRPO" },
+    { "match": "3.10", "group": "GRPO와 정리", "rail": "어휘 비교" },
     { "match": "핵심 정리", "group": "GRPO와 정리", "rail": "정리" },
     { "match": "이후 장과의 연결", "group": "GRPO와 정리", "rail": "연결" },
     { "match": "복습 질문", "group": "GRPO와 정리", "rail": "복습" }

@@ -1,6 +1,7 @@
 # 1장 노트의 그림 "텍스트가 토큰 ID열이 되기까지"를 그린다.
 # 입력은 codebot/tiny_codes.txt의 첫 문서 경계 부분(실제 텍스트)이고,
-# 토크나이저는 1장에서 학습한 codebot/merge_rules.pkl(어휘 1,000)이다.
+# 토크나이저는 1장에서 학습한 codebot/merge_rules_2000.pkl(어휘 2,000, 이 저장소의 기본)이다.
+# 책과 같은 어휘 1,000으로 그리려면 VOCAB=1000을 붙여 실행한다.
 # 실행(저장소 루트에서): .venv/bin/python ch01/flow_graph.py → docs/ch01/images/fig01-flow-a.png, fig01-flow-b.png
 # 나눔명조(NanumMyeongjo) 폰트가 필요하다.
 import sys
@@ -17,17 +18,19 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT))
 from codebot.tokenizer import BPETokenizer, pretokenize, merge
+from codebot.utils import get_vocab_size, codebot_paths
 import regex as re
 
 # ---------------------------------------------------------------- 데이터
-tok = BPETokenizer.load_from(str(ROOT / "codebot/merge_rules.pkl"))
+PATHS = codebot_paths(get_vocab_size())
+tok = BPETokenizer.load_from(str(ROOT / PATHS["tokenizer"]))
 END = tok.end_token
 text_all = open(ROOT / "codebot/tiny_codes.txt", encoding="utf-8").read()
 k = text_all.find(END)
 SAMPLE = text_all[k - 46:k + len(END) + 20]     # "\nprint(f'Your ... {tasks}')\n<|endoftext|>\nshopping_list = {}\n"
 PIECES = re.split("(" + re.escape(END) + ")", SAMPLE)
 ENC = tok.encode(SAMPLE)
-BIN = np.fromfile(ROOT / "codebot/tiny_codes.bin", dtype=np.uint16)
+BIN = np.fromfile(ROOT / PATHS["data"], dtype=np.uint16)
 BIN_POS = next(i for i in range(len(BIN)) if BIN[i:i + len(ENC)].tolist() == ENC)
 N_BYTES = len(SAMPLE.encode("utf-8"))
 assert tok.decode(ENC) == SAMPLE
@@ -162,7 +165,7 @@ for p, w in zip(PIECES, widths):
 y2 = y1b - 1.95
 arrow(ax, W / 2, y1b - 1.25, W / 2, y2 + 0.3)
 step_label(ax, y2, "②", "문서마다 사전 토큰화 (GPT-2 정규식)", "조각 경계를 넘는 병합은 일어나지 않는다")
-ax.text(1.35, y2 - 0.55, "조각마다 UTF-8 바이트로 바꾸고, 병합 규칙 743개를 학습 순서대로 적용한다",
+ax.text(1.35, y2 - 0.55, f"조각마다 UTF-8 바이트로 바꾸고, 병합 규칙 {len(tok.merge_rules):,}개를 학습 순서대로 적용한다",
         fontsize=11.5, color=INK, va="center")
 ax.text(0.35, y2 - 0.55, "③④", fontsize=13, fontweight="bold", color=RED, va="center")
 
@@ -221,7 +224,7 @@ ynext2, ci = draw_doc(CHUNKS[2], 5.85, ynext, W - 0.3, ci)
 # 범례 같은 설명
 yl = ynext2 + 0.05
 ax.text(0.35, yl, "테두리 칸 = 사전 토큰(조각),  아래 색 칸 = 병합 후 남은 토큰과 그 ID.  "
-        "한 조각이 여러 토큰으로 남기도 한다(␣today → ␣to · d · ay).",
+        "한 조각이 여러 토큰으로 남기도 한다(tasks → t · as · ks).",
         fontsize=9.5, color=GRAY, va="center")
 
 # ⑤ 이어 붙이기 → bin
@@ -234,10 +237,10 @@ for j, line in enumerate([s_ids[:half + 1], s_ids[half + 2:]]):
     ax.text(0.55, y5 - 0.78 - j * 0.48, line, fontsize=9.5, family=MONO, color=INK, va="center", zorder=5)
 y6 = y5 - 2.6
 arrow(ax, W / 2, y5 - 1.8, W / 2, y6 + 0.32)
-rbox(ax, W / 2 - 4.2, y6 - 0.45, 8.4, 0.85, "#F3F0C4", ec=INK)
-ax.text(W / 2, y6 - 0.03, "np.uint16으로 tiny_codes.bin에 저장 → 2장 이후 학습 데이터", fontsize=11, ha="center",
+rbox(ax, W / 2 - 4.9, y6 - 0.45, 9.8, 0.85, "#F3F0C4", ec=INK)
+ax.text(W / 2, y6 - 0.03, f"np.uint16으로 {Path(PATHS['data']).name}에 저장 → 2장 이후 학습 데이터", fontsize=11, ha="center",
         va="center", zorder=5)
-ax.text(W / 2, y6 - 1.0, f"실제 tiny_codes.bin의 {BIN_POS}~{BIN_POS + len(ENC) - 1}번째 값과 똑같다.   "
+ax.text(W / 2, y6 - 1.0, f"실제 {Path(PATHS['data']).name}의 {BIN_POS}~{BIN_POS + len(ENC) - 1}번째 값과 똑같다.   "
         f"압축률 = {N_BYTES} 바이트 / {len(ENC)} 토큰 = {N_BYTES / len(ENC):.2f}배",
         fontsize=10, color=GRAY, ha="center", va="center")
 
@@ -258,7 +261,7 @@ HB = 22.0
 fig, ax = new_fig(HB)
 ax.text(0.35, HB - 0.6, "(b)  조각 하나 안에서 병합 규칙이 적용되는 순서", fontsize=14, fontweight="bold",
         color=INK, va="center")
-ax.text(0.35, HB - 1.25, "규칙 번호 = 학습된 순서(= 새 ID). 743개를 256번부터 차례로 훑으며, 맞는 쌍이 있는 규칙에서만 ID열이 바뀐다.",
+ax.text(0.35, HB - 1.25, f"규칙 번호 = 학습된 순서(= 새 ID). {len(tok.merge_rules):,}개를 256번부터 차례로 훑으며, 맞는 쌍이 있는 규칙에서만 ID열이 바뀐다.",
         fontsize=10, color=GRAY, va="center")
 
 BW = 0.78       # 바이트 한 칸 폭
