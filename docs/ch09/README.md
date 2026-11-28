@@ -97,7 +97,7 @@ class GPT(nn.Module):
 | **데이터 병렬** | 학습 데이터(배치) | 모델이 GPU 한 장에 들어갈 때 → 이 책의 범위 |
 | 모델 병렬 | 모델 자체 | 모델이 GPU 한 장에 안 들어갈 때 |
 
-<img src="images/fig09-01.png" alt="그림 9-1 데이터 병렬 개요" width="600">
+<img src="images/fig09-01.png" alt="그림 9-1 데이터 병렬 개요" width="484">
 
 *그림 9-1 — 데이터 병렬 개요. 모든 GPU에 같은 모델을 올리고 미니배치를 1/4씩 나눠 순전파·역전파한 뒤, All-Reduce로 기울기를 모아 모두가 같은 기울기로 갱신한다.*
 
@@ -280,7 +280,7 @@ for step in pbar:
 
 ### 학습 결과
 
-<img src="images/fig09-03.png" alt="그림 9-3 Weights & Biases로 기록한 WebBot의 검증 손실 추이" width="600">
+<img src="images/fig09-03.png" alt="그림 9-3 Weights & Biases로 기록한 WebBot의 검증 손실 추이" width="563">
 
 *그림 9-3 — W&B 대시보드의 검증 손실. 처음 1만 스텝에서 빠르게 내려가고 이후 완만해져, 99,999스텝에서 3.03에 도달한다.*
 

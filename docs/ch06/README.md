@@ -249,7 +249,7 @@ $$
 | **코사인 어닐링** (GPT-3 등) | $\eta = \eta_{\min} + \tfrac12(\eta_{\max}-\eta_{\min})\bigl(1+\cos(\pi p)\bigr)$ | 널리 검증됨. $\eta_{\min}$(보통 $0.1\,\eta_{\max}$)을 따로 정해야 함 |
 | **Linear D2Z** (Decay-To-Zero) [Bergsma et al., 2025] | $\eta = \eta_{\max}\,(1 - p)$ | 단순, $\eta_{\min}$ 불필요. 코사인과 같거나 더 낫다는 보고 → **이 책의 선택** |
 
-<img src="images/fig06-01.png" alt="그림 6-1 코사인 어닐링과 D2Z 비교" width="600">
+<img src="images/fig06-01.png" alt="그림 6-1 코사인 어닐링과 D2Z 비교" width="569">
 
 *그림 6-1 — 회색 구간이 워밍업(여기서는 전체의 5%). 코사인은 처음엔 천천히 내려가다 $`0.1\,\eta_{\max}`$에서 멈추고, D2Z는 일정한 기울기로 0까지 내려간다. (`ch06/lr_graph.py`로 그린 그래프)*
 
@@ -308,7 +308,7 @@ $$
 \text{값} = (-1)^{\text{부호}} \times 1.\text{가수} \times 2^{\,\text{지수} - \text{편향}}
 $$
 
-<img src="images/fig06-02.png" alt="그림 6-2 FP32, FP16, BF16의 비트 구성" width="600">
+<img src="images/fig06-02.png" alt="그림 6-2 FP32, FP16, BF16의 비트 구성" width="552">
 
 *그림 6-2 — 분홍 = 부호부, 노랑 = 지수부(표현 범위), 파랑 = 가수부(정밀도). BF16은 FP32의 지수부 8비트를 그대로 두고 가수부만 7비트로 잘라낸 모양이다.*
 
@@ -495,7 +495,7 @@ for i in pbar:
 | 애플 실리콘 (M2 맥북에어) | 약 1일 |
 | CPU | 며칠 이상 (비추천) |
 
-<img src="images/fig06-03.png" alt="그림 6-3 검증 데이터에서의 손실 추이" width="600">
+<img src="images/fig06-03.png" alt="그림 6-3 검증 데이터에서의 손실 추이" width="570">
 
 *그림 6-3 — 검증 손실이 약 9.3에서 시작해 수백 스텝 만에 2대로 급락하고, 이후 40,000스텝까지 1.3 근처로 천천히 내려간다. 과대적합 없이 순조롭게 학습되고 있다.*
 
@@ -686,7 +686,7 @@ $$
 
 여기서 필요한 건 **응답 부분**뿐이다. 프롬프트와 패딩은 마스크로 지운다.
 
-<img src="images/fig06-05.png" alt="그림 6-5 DPO의 입력 데이터와 마스크 구조" width="600">
+<img src="images/fig06-05.png" alt="그림 6-5 DPO의 입력 데이터와 마스크 구조" width="376">
 
 *그림 6-5 — 입력은 [프롬프트 | 응답 | 패딩(0)]을 이어 붙인 ID열이고, 마스크는 응답 위치만 1이다. 토큰별 로그 확률에 마스크를 곱하면 응답 부분만 남는다.*
 
@@ -799,7 +799,7 @@ for i in range(max_iters):
 
 ### 6.8.3 DPO 모델 평가 — `ch06/09_llm_judge.py`
 
-<img src="images/fig06-06.png" alt="그림 6-6 손실 추이" width="600">
+<img src="images/fig06-06.png" alt="그림 6-6 손실 추이" width="571">
 
 *그림 6-6 — DPO 손실이 약 0.69에서 시작해 꾸준히 줄고, 약 1,000이터레이션에서 0 근처로 수렴한다.*
 

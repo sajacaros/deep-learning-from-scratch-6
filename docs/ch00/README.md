@@ -22,7 +22,7 @@ flowchart LR
   - `A cat sat on the mat` ↑ 확률 높음 / `Mat the on sat cat a` ↓ 확률 낮음
 - 확률을 구하는 대표적인 방법이 **다음 단어 예측**이다.
 
-<img src="images/fig00-01.png" alt="그림 0-1 언어 모델의 다음 단어 예측 예" width="600">
+<img src="images/fig00-01.png" alt="그림 0-1 언어 모델의 다음 단어 예측 예" width="509">
 
 *그림 0-1 — "A cat sat on the" 다음에 올 단어의 확률 분포. 고양이가 앉을 만한 장소(mat, chair, floor)일수록 확률이 높다.*
 
@@ -80,7 +80,7 @@ $$
 
 GPT = **G**enerative **P**re-trained **T**ransformer (생성적 · 사전 학습된 · 트랜스포머)
 
-<img src="images/fig00-05.png" alt="그림 0-5 GPT 시리즈의 발전" width="600">
+<img src="images/fig00-05.png" alt="그림 0-5 GPT 시리즈의 발전" width="597">
 
 *그림 0-5 — GPT 시리즈의 발전 (파란색: 오픈소스, 노란색: 비공개)*
 
@@ -109,7 +109,7 @@ GPT = **G**enerative **P**re-trained **T**ransformer (생성적 · 사전 학습
 
 - LLM = **토크나이저**(텍스트 ↔ 토큰 ID) + **모델**(토큰 ID열 → 다음 토큰 예측). 둘은 **따로 설계하고 따로 학습**한다.
 
-<img src="images/fig00-07.png" alt="그림 0-7 토크나이저와 모델의 학습 흐름" width="600">
+<img src="images/fig00-07.png" alt="그림 0-7 토크나이저와 모델의 학습 흐름" width="586">
 
 *그림 0-7 — ① 텍스트로 토크나이저를 학습하고 → ② 학습된 토크나이저로 텍스트를 토큰 ID열로 바꾼 뒤 → ③ 모델을 학습한다.*
 
@@ -201,7 +201,7 @@ GPT = **G**enerative **P**re-trained **T**ransformer (생성적 · 사전 학습
 
 SFT의 한계: 대화 예시 수가 적고, "좋은 답 / 나쁜 답"의 기준은 너무 복잡해서 지도 학습만으로는 담기 어렵다.
 
-<img src="images/fig00-09.png" alt="그림 0-9 강화 학습의 기본 구조" width="546">
+<img src="images/fig00-09.png" alt="그림 0-9 강화 학습의 기본 구조" width="328">
 
 *그림 0-9 — 에이전트가 행동하고, 환경이 새 상태와 보상을 돌려준다. 시행착오를 반복하며 보상이 큰 행동을 배운다.*
 
@@ -221,7 +221,7 @@ LLM용 강화 학습은 **보상을 어떻게 설계하느냐**에 따라 두 �
 1. 같은 질문에 대한 답변 여러 개를 사람이 비교해 **선호 데이터**(A > B)를 만든다.
 2. 선호 데이터로 **보상 모델**(답변 → 점수)을 학습한다.
 
-<img src="images/fig00-10.png" alt="그림 0-10 보상 모델의 학습 흐름" width="600">
+<img src="images/fig00-10.png" alt="그림 0-10 보상 모델의 학습 흐름" width="569">
 
 *그림 0-10 — "6세 아이에게 번개를 설명해줘"에 대한 두 답변 중 사람이 A를 고른다 → 보상 모델 학습*
 

@@ -48,7 +48,7 @@ $$
 
 목표는 $\mathrm{score}_{mn}$이 **$m-n$에만 의존**하게 만드는 것이다. 2차원으로 생각해 보자. 위치 $m$의 쿼리는 $m\theta$만큼, 위치 $n$의 키는 $n\theta$만큼 돌린다.
 
-<img src="images/fig05-01.png" alt="그림 5-1 회전한 벡터 사이의 내적 예" width="443">
+<img src="images/fig05-01.png" alt="그림 5-1 회전한 벡터 사이의 내적 예" width="266">
 
 *그림 5-1 — (m=4, n=2)와 (m=5, n=3)은 회전 후 두 벡터 사이의 각도가 같다. 차이 (m−n)θ가 같으면 내적도 같다.*
 
@@ -182,7 +182,7 @@ $$
 
 $\sigma$는 시그모이드. 대부분의 구현은 $\beta=1$로 고정하며, 이를 **SiLU**(Sigmoid Linear Unit)라 부른다.
 
-<img src="images/fig05-02.png" alt="그림 5-2 Swish, GELU, ReLU 비교" width="600">
+<img src="images/fig05-02.png" alt="그림 5-2 Swish, GELU, ReLU 비교" width="571">
 
 *그림 5-2 — ReLU는 음수를 0으로 잘라내지만 Swish·GELU는 음수 영역에서도 작은 값을 흘려보내고 기울기가 매끄럽게 변한다 → 학습이 안정되고 기울기 소실이 덜하다. (그래프는 `ch05/graph.py`로 그릴 수 있다)*
 
@@ -190,7 +190,7 @@ $\sigma$는 시그모이드. 대부분의 구현은 $\beta=1$로 고정하며, �
 
 **GLU(Gated Linear Unit)**: 입력을 두 갈래로 나눠 한쪽은 **특징**, 다른 쪽은 **게이트**(0~1)로 만들고 요소별로 곱한다. 게이트가 "이 특징을 얼마나 통과시킬지"를 정한다.
 
-<img src="images/fig05-03.png" alt="그림 5-3 GLU의 구조" width="600">
+<img src="images/fig05-03.png" alt="그림 5-3 GLU의 구조" width="554">
 
 *그림 5-3 — GLU의 구조(⊗는 요소별 곱). 한쪽 Linear 출력에 시그모이드를 씌워 게이트로 쓴다.*
 
@@ -205,11 +205,11 @@ $\sigma$는 시그모이드. 대부분의 구현은 $\beta=1$로 고정하며, �
 
 ### 5.2.3 FFN 구조 비교
 
-<img src="images/fig05-04.png" alt="그림 5-4 GPT-2의 FFN 구조" width="396">
+<img src="images/fig05-04.png" alt="그림 5-4 GPT-2의 FFN 구조" width="238">
 
 *그림 5-4 — GPT-2의 FFN: Linear로 확장 → GELU → Linear로 복원 (드롭아웃 생략).*
 
-<img src="images/fig05-05.png" alt="그림 5-5 SwiGLU를 사용한 FFN" width="598">
+<img src="images/fig05-05.png" alt="그림 5-5 SwiGLU를 사용한 FFN" width="359">
 
 *그림 5-5 — SwiGLU FFN: 입력을 두 Linear(W, V)로 보내고, 한쪽에만 Swish를 씌워 곱한 뒤 출력 Linear(O)로 되돌린다.*
 
@@ -299,7 +299,7 @@ class RMSNorm(nn.Module):
 
 ## 5.4 개선된 GPT 구현 — `ch05/04_improved_gpt.py`
 
-<img src="images/fig05-06.png" alt="그림 5-6 개선된 GPT의 전체 구조" width="600">
+<img src="images/fig05-06.png" alt="그림 5-6 개선된 GPT의 전체 구조" width="487">
 
 *그림 5-6 — 개선된 GPT의 전체 구조. Embed → (RMSNorm → MHA+RoPE → 잔차, RMSNorm → SwiGLU → 잔차) × N → RMSNorm → Linear → 로짓. 위치 임베딩을 더하는 단계가 사라졌다.*
 
@@ -377,7 +377,7 @@ print(logits.shape)   # torch.Size([8, 256, 10000])
 
 ### 5.5.1 텍스트 생성의 낭비
 
-<img src="images/fig05-07.png" alt="그림 5-7 텍스트 생성 흐름" width="600">
+<img src="images/fig05-07.png" alt="그림 5-7 텍스트 생성 흐름" width="449">
 
 *그림 5-7 — `["A", " cat"]` → `" sat"` 예측 → `["A", " cat", " sat"]`를 통째로 다시 넣어 → `" on"` 예측 → … (실제 입력은 토큰 ID)*
 

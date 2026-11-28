@@ -34,7 +34,7 @@ flowchart LR
 
 ### 하드 딕셔너리 vs 소프트 딕셔너리
 
-<img src="images/fig02-01.png" alt="그림 2-1 딕셔너리 사용 예" width="534">
+<img src="images/fig02-01.png" alt="그림 2-1 딕셔너리 사용 예" width="320">
 
 *그림 2-1 — 파이썬 딕셔너리는 쿼리와 **정확히 일치하는** 키 하나의 밸류만 꺼낸다. 없는 키를 넣으면 오류가 난다.*
 
@@ -45,7 +45,7 @@ flowchart LR
 | 출력 | 키 1개의 밸류 | **모든 밸류의 가중합** |
 | 없는 키 | `KeyError` | 항상 답이 나옴 |
 
-<img src="images/fig02-02.png" alt="그림 2-2 소프트 딕셔너리의 계산 흐름" width="600">
+<img src="images/fig02-02.png" alt="그림 2-2 소프트 딕셔너리의 계산 흐름" width="548">
 
 *그림 2-2 — 쿼리 `[1.2, 0.4]`를 네 개의 키와 비교하고, 그 결과로 밸류를 섞어 `[2.9, 3.3]`을 출력한다.*
 
@@ -55,11 +55,11 @@ flowchart LR
 2. **가중치** — 유사도에 softmax를 적용해 합이 1이 되게 정규화 (= **어텐션 가중치**)
 3. **가중합** — 가중치를 곱한 밸류를 모두 더한다
 
-<img src="images/fig02-03.png" alt="그림 2-3 쿼리와 각 키의 내적 계산 예" width="474">
+<img src="images/fig02-03.png" alt="그림 2-3 쿼리와 각 키의 내적 계산 예" width="284">
 
 *그림 2-3 — 예: $`1.2 \times 1.5 + 0.4 \times 0.0 = 1.8`$. 방향이 비슷하고 길이가 클수록 내적이 커진다.*
 
-<img src="images/fig02-04.png" alt="그림 2-4 소프트맥스 함수로 유사도를 정규화" width="600">
+<img src="images/fig02-04.png" alt="그림 2-4 소프트맥스 함수로 유사도를 정규화" width="449">
 
 *그림 2-4 — `[1.8, -0.56, 2.24, -0.76]` → `[0.367, 0.035, 0.570, 0.028]`. 모두 0~1이고 합은 1이다.*
 
@@ -67,7 +67,7 @@ $$
 \mathrm{softmax}(x)_i = \frac{e^{x_i}}{\sum_{k=1}^{n} e^{x_k}}
 $$
 
-<img src="images/fig02-05.png" alt="그림 2-5 가중합 계산 예" width="530">
+<img src="images/fig02-05.png" alt="그림 2-5 가중합 계산 예" width="318">
 
 *그림 2-5 — 가중치가 가장 큰 세 번째 키(0.57)의 밸류 `[2.7, 3.9]`가 출력에 가장 많이 반영된다.*
 
@@ -120,15 +120,15 @@ def soft_dictionary(query, dictionary):
 
 ### 쿼리 1개
 
-<img src="images/fig02-06.png" alt="그림 2-6 쿼리·키·밸류의 형상" width="600">
+<img src="images/fig02-06.png" alt="그림 2-6 쿼리·키·밸류의 형상" width="372">
 
 *그림 2-6 — 쿼리 $`q`$: $`(1, d)`$, 키 $`K`$: $`(n, d)`$, 밸류 $`V`$: $`(n, d_v)`$. 내적을 하려면 쿼리와 키의 차원 $`d`$가 같아야 하고, 밸류는 내적에 쓰이지 않으므로 $`d_v \ne d`$여도 된다.*
 
-<img src="images/fig02-07.png" alt="그림 2-7 쿼리와 키의 행렬곱을 이용한 유사도 계산" width="600">
+<img src="images/fig02-07.png" alt="그림 2-7 쿼리와 키의 행렬곱을 이용한 유사도 계산" width="451">
 
 *그림 2-7 — $`qK^\top`$: $`(1, d) @ (d, n) \to (1, n)`$. 행렬곱 한 번으로 모든 키와의 내적을 구한다.*
 
-<img src="images/fig02-08.png" alt="그림 2-8 밸류 벡터와의 행렬곱을 이용한 가중합" width="600">
+<img src="images/fig02-08.png" alt="그림 2-8 밸류 벡터와의 행렬곱을 이용한 가중합" width="413">
 
 *그림 2-8 — $`wV`$: $`(1, n) @ (n, d_v) \to (1, d_v)`$. 가중합도 행렬곱 한 번으로 끝난다.*
 
@@ -144,7 +144,7 @@ $$
 
 ### 쿼리 여러 개
 
-<img src="images/fig02-09.png" alt="그림 2-9 여러 쿼리를 하나의 행렬로 모으기" width="387">
+<img src="images/fig02-09.png" alt="그림 2-9 여러 쿼리를 하나의 행렬로 모으기" width="232">
 
 *그림 2-9 — 쿼리 $`m`$개를 쌓으면 $`Q`$: $`(m, d)`$.*
 
@@ -154,11 +154,11 @@ $$
 
 $q$가 $Q$로 바뀌기만 했다. 식이 그대로인 이유는 **행렬곱과 (행 방향) softmax가 모두 행 단위로 독립적**이기 때문이다.
 
-<img src="images/fig02-10.png" alt="그림 2-10 행렬곱에서 각 행을 독립적으로 계산하는 모습" width="600">
+<img src="images/fig02-10.png" alt="그림 2-10 행렬곱에서 각 행을 독립적으로 계산하는 모습" width="372">
 
 *그림 2-10 — $`AB`$의 $`i`$번째 행은 $`A`$의 $`i`$번째 행만으로 정해진다. $`ABC`$처럼 곱을 이어도 마찬가지다.*
 
-<img src="images/fig02-11.png" alt="그림 2-11 여러 쿼리에 대한 어텐션 계산 과정" width="600">
+<img src="images/fig02-11.png" alt="그림 2-11 여러 쿼리에 대한 어텐션 계산 과정" width="583">
 
 *그림 2-11 — 쿼리마다 $`K^\top`$ 곱 → softmax → $`V`$ 곱을 서로 독립적으로, 동시에 계산한다.*
 
@@ -215,7 +215,7 @@ for _ in range(num_samples):
 분산(스케일링 적용): 0.998...   ≈ 1
 ```
 
-<img src="images/fig02-12.png" alt="그림 2-12 스케일링에 따른 내적 분포의 변화" width="600">
+<img src="images/fig02-12.png" alt="그림 2-12 스케일링에 따른 내적 분포의 변화" width="507">
 
 *그림 2-12 — 파란색(스케일링 없음)은 넓게 퍼지고, 주황색(스케일링 적용)은 좁게 모인다.*
 
@@ -227,7 +227,7 @@ for _ in range(num_samples):
 
 ### 3단계 처리 흐름
 
-<img src="images/fig02-13.png" alt="그림 2-13 토크나이저를 이용해 텍스트를 토큰 ID열로 변환" width="600">
+<img src="images/fig02-13.png" alt="그림 2-13 토크나이저를 이용해 텍스트를 토큰 ID열로 변환" width="473">
 
 *그림 2-13 — `"A cat sat on the"` → `[32, 797, 932, 319, 262]` (1장의 토크나이저).*
 
@@ -241,7 +241,7 @@ for _ in range(num_samples):
 | ② 어텐션 + FFN (블록 × N) | 각 토큰 벡터를 갱신 | $(c, e) \to (c, e)$ **형상 유지** |
 | ③ Linear + Softmax | 어휘 크기로 사영 → 확률 분포 | $(c, e) \to (c, v)$ |
 
-<img src="images/fig02-15.png" alt="그림 2-15 토큰화와 임베딩 벡터로의 변환" width="600">
+<img src="images/fig02-15.png" alt="그림 2-15 토큰화와 임베딩 벡터로의 변환" width="421">
 
 *그림 2-15 — 토큰 ID $`c`$개가 $`e`$차원 임베딩 벡터 $`c`$개, 즉 $`(c, e)`$ 텐서가 된다. 의미가 비슷한 토큰일수록 비슷한 벡터가 된다.*
 
@@ -264,7 +264,7 @@ $$
 
 *그림 2-17 — 학습 가능한 가중치 행렬 $`W_q, W_k, W_v`$와의 행렬곱(Matmul)으로 $`Q, K, V`$를 만든 뒤 어텐션을 계산한다.*
 
-<img src="images/fig02-18.png" alt="그림 2-18 쿼리, 키, 밸류의 형상(셀프 어텐션)" width="600">
+<img src="images/fig02-18.png" alt="그림 2-18 쿼리, 키, 밸류의 형상(셀프 어텐션)" width="501">
 
 *그림 2-18 — $`Q, K`$: $`(c, d)`$ (내적을 위해 같아야 함), $`V`$: $`(c, e)`$ (잔차 덧셈을 위해 출력이 $`e`$차원이어야 함).*
 
@@ -275,11 +275,11 @@ $$
 | $QK^\top$ | | $(c, c)$ — 토큰 × 토큰 |
 | 출력 | | $(c, e)$ |
 
-<img src="images/fig02-19.png" alt="그림 2-19 FFN의 예" width="600">
+<img src="images/fig02-19.png" alt="그림 2-19 FFN의 예" width="419">
 
 *그림 2-19 — FFN은 Linear → 비선형 → Linear 구조이며 $`(c, e) \to (c, e)`$다. 자세한 구조는 2.9절에서 다룬다.*
 
-<img src="images/fig02-20.png" alt="그림 2-20 선형 변환과 소프트맥스 함수" width="600">
+<img src="images/fig02-20.png" alt="그림 2-20 선형 변환과 소프트맥스 함수" width="402">
 
 *그림 2-20 — Linear로 $`(c, e) \to (c, v)`$, softmax로 행마다 어휘 위의 확률 분포를 만든다.*
 
@@ -302,7 +302,7 @@ $$
 
 *그림 2-22 — 행과 토큰의 대응은 그대로다(2번째 행은 계속 `" cat"`). 블록을 지날 때마다 **벡터의 내용만** 바뀐다.*
 
-<img src="images/fig02-23.png" alt="그림 2-23 FFN과 어텐션 비교" width="600">
+<img src="images/fig02-23.png" alt="그림 2-23 FFN과 어텐션 비교" width="537">
 
 *그림 2-23 — FFN은 토큰마다 **독립적으로** 변환하고(Position-wise FFN), 어텐션은 **다른 토큰들의 정보를 섞어** 갱신한다.*
 
@@ -319,11 +319,11 @@ $$
 
 *그림 2-24 — 임베딩 직후에는 두 문장의 `" orange"`(ID 462) 벡터가 **똑같다**.*
 
-<img src="images/fig02-25.png" alt="그림 2-25 orange 토큰에 해당하는 임베딩 벡터의 이미지" width="600">
+<img src="images/fig02-25.png" alt="그림 2-25 orange 토큰에 해당하는 임베딩 벡터의 이미지" width="390">
 
 *그림 2-25 — 처음 벡터는 과일과 색의 의미가 섞인 "일반적인 오렌지"다.*
 
-<img src="images/fig02-26.png" alt="그림 2-26 어텐션을 통한 임베딩 벡터의 갱신 이미지" width="600">
+<img src="images/fig02-26.png" alt="그림 2-26 어텐션을 통한 임베딩 벡터의 갱신 이미지" width="511">
 
 *그림 2-26 — `" ate"`, `" fresh"`의 정보가 잔차 연결로 더해지면서 "과일" 쪽 의미가 또렷해진다.*
 
@@ -351,7 +351,7 @@ $$
 
 출발점은 **2진수**다. 자릿수마다 0/1이 반복되는 주기가 다르다.
 
-<img src="images/fig02-29.png" alt="그림 2-29 위치를 2진수로 표현한 예" width="358">
+<img src="images/fig02-29.png" alt="그림 2-29 위치를 2진수로 표현한 예" width="215">
 
 *그림 2-29 — 오른쪽 끝 자리의 주기는 2, 그 왼쪽부터 4, 8, 16. 낮은 자리일수록 빨리 바뀐다.*
 
@@ -365,7 +365,7 @@ $$
 - $pos$: 토큰 위치, $d_{model}$: 임베딩 차원, $i = 0, 1, \dots, d_{model}/2 - 1$ (차원 쌍 인덱스)
 - 짝수 차원은 sin, 홀수 차원은 cos
 
-<img src="images/fig02-30.png" alt="그림 2-30 위치 인코딩 벡터의 값을 시각화한 히트맵" width="600">
+<img src="images/fig02-30.png" alt="그림 2-30 위치 인코딩 벡터의 값을 시각화한 히트맵" width="569">
 
 *그림 2-30 — $`d_{model}=128`$. 행마다 패턴이 고유하다. 왼쪽(낮은 차원)은 빠르게, 오른쪽(높은 차원)은 천천히 변한다. 2진수의 낮은 자리/높은 자리와 같은 구조다.*
 
@@ -421,11 +421,11 @@ def forward(self, x):                                   # x: (B, C) 토큰 ID
 
 ### 문제: 미래 토큰을 보면 커닝이 된다
 
-<img src="images/fig02-32.png" alt="그림 2-32 어텐션을 사용하면 모든 토큰의 정보를 참조하게 된다" width="600">
+<img src="images/fig02-32.png" alt="그림 2-32 어텐션을 사용하면 모든 토큰의 정보를 참조하게 된다" width="545">
 
 *그림 2-32 — 마스크가 없으면 각 위치가 뒤쪽 토큰(정답)까지 본다. 예측이 아니라 답을 베끼는 학습이 된다.*
 
-<img src="images/fig02-33.png" alt="그림 2-33 어텐션의 참조 범위를 적절히 제한한 모습" width="600">
+<img src="images/fig02-33.png" alt="그림 2-33 어텐션의 참조 범위를 적절히 제한한 모습" width="567">
 
 *그림 2-33 — 원하는 동작: $`i`$번째 위치는 1 ~ $`i`$번째 토큰만 참조한다.*
 
@@ -438,13 +438,13 @@ def forward(self, x):                                   # x: (B, C) 토큰 ID
 
 ### 어텐션 맵과 마스크
 
-<img src="images/fig02-34.png" alt="그림 2-34 쿼리, 키, 밸류를 생성하는 과정" width="600">
+<img src="images/fig02-34.png" alt="그림 2-34 쿼리, 키, 밸류를 생성하는 과정" width="496">
 
 *그림 2-34 — 각 토큰의 임베딩 벡터에 $`W_q, W_k, W_v`$를 곱해 토큰마다 쿼리·키·밸류를 만든다.*
 
 $\mathrm{softmax}(QK^\top/\sqrt{d})$의 결과인 $(C, C)$ 행렬을 **어텐션 가중치 행렬 = 어텐션 맵**이라고 한다. 행 = 쿼리(보는 쪽), 열 = 키(보이는 쪽)이고 각 행의 합은 1이다.
 
-<img src="images/fig02-35.png" alt="그림 2-35 어텐션 맵의 예" width="466">
+<img src="images/fig02-35.png" alt="그림 2-35 어텐션 맵의 예" width="280">
 
 *그림 2-35 — 3번째 행(`" sat"`)은 자기 자신(0.38)과 **미래 토큰** `" on"`(0.34)에 크게 주목하고 있다.*
 
@@ -452,13 +452,13 @@ $\mathrm{softmax}(QK^\top/\sqrt{d})$의 결과인 $(C, C)$ 행렬을 **어텐션
 
 *그림 2-36 — `" sat"`의 출력 = 0.03·A + 0.17·cat + 0.38·sat + 0.34·on + 0.08·the. 미래인 on, the의 밸류가 섞여 들어간다.*
 
-<img src="images/fig02-37.png" alt="그림 2-37 어텐션 맵에서 미래 토큰 참조를 제한한 예" width="467">
+<img src="images/fig02-37.png" alt="그림 2-37 어텐션 맵에서 미래 토큰 참조를 제한한 예" width="280">
 
 *그림 2-37 — 맵의 오른쪽 위 삼각형(미래)을 0으로 만들면 해당 밸류가 출력에 반영되지 않는다.*
 
 ⚠️ softmax **뒤에** 0으로 바꾸면 행의 합이 1이 아니게 된다. 그래서 softmax **앞에서** 점수를 $-\infty$로 바꾼다.
 
-<img src="images/fig02-38.png" alt="그림 2-38 -∞를 이용한 마스크와 소프트맥스 적용 후의 확률 분포" width="600">
+<img src="images/fig02-38.png" alt="그림 2-38 -∞를 이용한 마스크와 소프트맥스 적용 후의 확률 분포" width="571">
 
 *그림 2-38 — 예: 2행 `[-1.4, 3.8, -∞, -∞, -∞]` → `[0.01, 0.99, 0, 0, 0]`. $`e^{-\infty}=0`$이고, 남은 값끼리 합이 1이 되도록 정규화된다.*
 
@@ -467,7 +467,7 @@ $\mathrm{softmax}(QK^\top/\sqrt{d})$의 결과인 $(C, C)$ 행렬을 **어텐션
 
 ### 배치 행렬곱 `torch.matmul`
 
-<img src="images/fig02-39.png" alt="그림 2-39 파이토치에서 2차원 텐서와 3차원 텐서의 행렬곱" width="600">
+<img src="images/fig02-39.png" alt="그림 2-39 파이토치에서 2차원 텐서와 3차원 텐서의 행렬곱" width="428">
 
 *그림 2-39 — 3차원 텐서는 첫 축을 **배치**로 보고, 배치마다 2차원 행렬곱을 독립적으로(병렬로) 수행한다.*
 
@@ -504,11 +504,11 @@ class Attention(nn.Module):
         return torch.matmul(weights, V)    # (B, C, E)
 ```
 
-<img src="images/fig02-40.png" alt="그림 2-40 쿼리와 키의 행렬곱으로 어텐션 점수를 계산하는 과정" width="600">
+<img src="images/fig02-40.png" alt="그림 2-40 쿼리와 키의 행렬곱으로 어텐션 점수를 계산하는 과정" width="458">
 
 *그림 2-40 — `K.transpose(-2, -1)`은 마지막 두 축을 바꿔 $`(B, C, D) \to (B, D, C)`$로 만든다.*
 
-<img src="images/fig02-41.png" alt="그림 2-41 torch.tril()로 하삼각 행렬 만들기" width="600">
+<img src="images/fig02-41.png" alt="그림 2-41 torch.tril()로 하삼각 행렬 만들기" width="565">
 
 *그림 2-41 — `tril` = triangle lower. 대각선과 그 아래만 1로 남는다. `mask == 0`인 곳(미래)이 $`-\infty`$가 된다.*
 
@@ -590,7 +590,7 @@ for i in range(5):
 
 GPT-3는 $E = 12{,}288$, $D = 128$이다.
 
-<img src="images/fig02-42.png" alt="그림 2-42 GPT-3의 변환 행렬" width="600">
+<img src="images/fig02-42.png" alt="그림 2-42 GPT-3의 변환 행렬" width="502">
 
 *그림 2-42 — $`W_q, W_k`$는 가늘고 긴 $`(E, 128)`$인데, $`W_v`$만 $`(E, E)`$ 정사각 행렬이다. (그림 속 숫자 "12228"은 12,288의 오기로 보인다.)*
 
@@ -608,7 +608,7 @@ $$
 W_v \approx W_{v1} W_{v2}, \qquad W_{v1}: (12288, k),\quad W_{v2}: (k, 12288)
 $$
 
-<img src="images/fig02-43.png" alt="그림 2-43 k = 128일 때 저랭크 근사를 위한 행렬 분해" width="600">
+<img src="images/fig02-43.png" alt="그림 2-43 k = 128일 때 저랭크 근사를 위한 행렬 분해" width="437">
 
 *그림 2-43 — $`k = 128`$이면 약 1.5억 → 약 300만($`2 \times 12288 \times 128 \approx 315`$만). 약 98%가 줄고, 입출력 차원은 그대로다.*
 
@@ -654,7 +654,7 @@ def forward(self, x):
 
 ### 여러 관점에서 보기
 
-<img src="images/fig02-45.png" alt="그림 2-45 싱글헤드 어텐션과 멀티헤드 어텐션 비교" width="600">
+<img src="images/fig02-45.png" alt="그림 2-45 싱글헤드 어텐션과 멀티헤드 어텐션 비교" width="469">
 
 *그림 2-45 — 헤드(어텐션) 여러 개를 병렬로 돌리고 출력을 합친다.*
 
@@ -700,11 +700,11 @@ $$
 | 헤드 이어 붙이기 ($[R^1 \cdots R^h]$) | `.view(B, C, H*D)` | (B, C, H·D) |
 | 출력 변환 | `W_o` (`nn.Linear(H*D, E)`) | (B, C, E) |
 
-<img src="images/fig02-47.png" alt="그림 2-47 텐서 형상의 변화" width="600">
+<img src="images/fig02-47.png" alt="그림 2-47 텐서 형상의 변화" width="496">
 
 *그림 2-47 — `view`로 마지막 축을 (H, D)로 쪼개고, `transpose(1, 2)`로 H를 앞으로 보낸다. 4차원 matmul은 B와 H를 배치 축으로 다루므로 모든 헤드가 한 번에 계산된다.*
 
-<img src="images/fig02-48.png" alt="그림 2-48 멀티헤드 어텐션의 출력 텐서 형상 변환 과정" width="600">
+<img src="images/fig02-48.png" alt="그림 2-48 멀티헤드 어텐션의 출력 텐서 형상 변환 과정" width="598">
 
 *그림 2-48 — 헤드 출력 D개 묶음 H개를 이어 붙인 (B, C, H·D)에 $`(H·D, E)`$ 크기의 W_o를 곱하면 (B, C, E)가 된다.*
 
@@ -769,7 +769,7 @@ GPT-2식 블록은 원조 트랜스포머와 두 가지가 다르다. 활성화 
 
 ### LayerNorm과 pre-norm 구성
 
-<img src="images/fig02-49.png" alt="그림 2-49 트랜스포머 블록에서의 LayerNorm(pre-norm 구성)" width="600">
+<img src="images/fig02-49.png" alt="그림 2-49 트랜스포머 블록에서의 LayerNorm(pre-norm 구성)" width="430">
 
 *그림 2-49 — 어텐션과 FFN **앞에** LayerNorm을 둔다(pre-norm).*
 
@@ -811,11 +811,11 @@ class LayerNorm(nn.Module):
 
 ### FFN과 GELU
 
-<img src="images/fig02-51.png" alt="그림 2-51 2층 구조의 FFN" width="524">
+<img src="images/fig02-51.png" alt="그림 2-51 2층 구조의 FFN" width="314">
 
 *그림 2-51 — GPT-2의 FFN: Linear → GELU → Linear → Dropout.*
 
-<img src="images/fig02-52.png" alt="그림 2-52 ReLU 함수와 GELU 함수" width="600">
+<img src="images/fig02-52.png" alt="그림 2-52 ReLU 함수와 GELU 함수" width="571">
 
 *그림 2-52 — GELU는 ReLU를 부드럽게 만든 곡선이다. 음수 입력에도 0이 아닌 작은 값을 내고, 기울기가 급격히 끊기지 않는다.*
 
